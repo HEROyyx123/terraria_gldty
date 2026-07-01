@@ -5,9 +5,9 @@ using Terraria.ModLoader;
 namespace terraria_gldty.Content.Items.Packs
 {
     /// <summary>
-    /// 甲虫礼包 - 用甲虫外壳合成
+    /// 机械礼包 - 用三种机械魂合成
     /// </summary>
-    public class BeetlePack : ModItem
+    public class MechBossPack : ModItem
     {
         // // TODO: 替换为自定义占位 PNG 后删除此行
         // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
@@ -16,8 +16,8 @@ namespace terraria_gldty.Content.Items.Packs
             Item.width = 32;
             Item.height = 32;
             Item.maxStack = 99;
-            Item.value = Item.buyPrice(gold: 10);
-            Item.rare = ItemRarityID.Cyan;
+            Item.value = Item.buyPrice(gold: 8);
+            Item.rare = ItemRarityID.Pink;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.useTime = 30;
             Item.useAnimation = 30;
@@ -30,22 +30,20 @@ namespace terraria_gldty.Content.Items.Packs
         public override void RightClick(Player player) {
             var source = player.GetSource_OpenItem(Type);
 
-            player.QuickSpawnItem(source, ItemID.BeetleHusk, 99);
-            player.QuickSpawnItem(source, ItemID.TurtleShell, 3);
-            player.QuickSpawnItem(source, ItemID.FrozenTurtleShell);
-            player.QuickSpawnItem(source, ItemID.Picksaw);
-            player.QuickSpawnItem(source, ItemID.TruffleWorm, 99);
-            // 七彩草蛉
-            player.QuickSpawnItem(source, ItemID.EmpressButterfly, 99);
-            player.QuickSpawnItem(source, ItemID.GoldenFishingRod);
-            player.QuickSpawnItem(source, ItemID.GoldenBugNet);
+            player.QuickSpawnItem(source, ItemID.SoulofSight, 99);
+            player.QuickSpawnItem(source, ItemID.SoulofMight, 99);
+            player.QuickSpawnItem(source, ItemID.SoulofFright, 99);
+            player.QuickSpawnItem(source, ItemID.HallowedBar, 100);
+            player.QuickSpawnItem(source, ItemID.LifeFruit);
 
-            player.GetModPlayer<Common.Players.PackPlayer>().ReceivedBeetlePack = true;
+            player.GetModPlayer<Common.Players.PackPlayer>().ReceivedMechBossPack = true;
         }
 
         public override void AddRecipes() {
             CreateRecipe()
-                .AddIngredient(ItemID.BeetleHusk)
+                .AddIngredient(ItemID.SoulofSight)
+                .AddIngredient(ItemID.SoulofMight)
+                .AddIngredient(ItemID.SoulofFright)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }

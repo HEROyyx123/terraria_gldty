@@ -5,9 +5,9 @@ using Terraria.ModLoader;
 namespace terraria_gldty.Content.Items.Packs
 {
     /// <summary>
-    /// 甲虫礼包 - 用甲虫外壳合成
+    /// 教徒礼包 - 用远古操纵机合成
     /// </summary>
-    public class BeetlePack : ModItem
+    public class CultistPack : ModItem
     {
         // // TODO: 替换为自定义占位 PNG 后删除此行
         // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
@@ -30,22 +30,16 @@ namespace terraria_gldty.Content.Items.Packs
         public override void RightClick(Player player) {
             var source = player.GetSource_OpenItem(Type);
 
-            player.QuickSpawnItem(source, ItemID.BeetleHusk, 99);
-            player.QuickSpawnItem(source, ItemID.TurtleShell, 3);
-            player.QuickSpawnItem(source, ItemID.FrozenTurtleShell);
-            player.QuickSpawnItem(source, ItemID.Picksaw);
-            player.QuickSpawnItem(source, ItemID.TruffleWorm, 99);
-            // 七彩草蛉
-            player.QuickSpawnItem(source, ItemID.EmpressButterfly, 99);
-            player.QuickSpawnItem(source, ItemID.GoldenFishingRod);
-            player.QuickSpawnItem(source, ItemID.GoldenBugNet);
+            player.QuickSpawnItem(source, ItemID.LunarCraftingStation);
+            player.QuickSpawnItem(source, ItemID.LunarHook);
+            player.QuickSpawnItem(source, ItemID.BottomlessShimmerBucket);
 
-            player.GetModPlayer<Common.Players.PackPlayer>().ReceivedBeetlePack = true;
+            player.GetModPlayer<Common.Players.PackPlayer>().ReceivedCultistPack = true;
         }
 
         public override void AddRecipes() {
             CreateRecipe()
-                .AddIngredient(ItemID.BeetleHusk)
+                .AddIngredient(ItemID.LunarCraftingStation)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
