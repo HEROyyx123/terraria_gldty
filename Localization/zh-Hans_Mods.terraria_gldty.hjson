@@ -1,0 +1,228 @@
+Items: {
+	StarterPack: {
+		DisplayName: 新手大礼包
+		Tooltip: 开局赠送的基础物资大礼包, 右键打开获得丰富开局物资
+	}
+
+	EyeOfCthulhuPack: {
+		DisplayName: 克苏鲁之眼礼包
+		Tooltip: 击败克苏鲁之眼后解锁的物资包, 右键打开获得大量实用物资
+	}
+
+	EvilBossPack: {
+		DisplayName: 邪恶 Boss 礼包
+		Tooltip: 击败世界吞噬者/克苏鲁之脑后解锁, 右键打开获得狱石与专家饰品
+	}
+
+	QueenBeePack: {
+		DisplayName: 蜂后礼包
+		Tooltip: 击败蜂后后解锁,右键打开获得 20 个憎恶之蜂
+	}
+
+	KingSlimePack: {
+		DisplayName: 史莱姆王礼包
+		Tooltip: 击败史莱姆王后解锁, 右键打开获得多种前期物资
+	}
+
+	IronskinPotionPack: {
+		DisplayName: 铁皮药水药剂包
+		Tooltip: 打开获得 30 瓶铁皮药水
+	}
+
+	RegenerationPotionPack: {
+		DisplayName: 再生药水药剂包
+		Tooltip: 打开获得 30 瓶再生药水
+	}
+
+	SwiftnessPotionPack: {
+		DisplayName: 敏捷药水药剂包
+		Tooltip: 打开获得 30 瓶敏捷药水
+	}
+
+	NightOwlPotionPack: {
+		DisplayName: 夜猫子药水药剂包
+		Tooltip: 打开获得 30 瓶夜猫子药水
+	}
+
+	HunterPotionPack: {
+		DisplayName: 狩猎药水药剂包
+		Tooltip: 打开获得 30 瓶狩猎药水
+	}
+
+	ArcheryPotionPack: {
+		DisplayName: 箭术药水药剂包
+		Tooltip: 打开获得 30 瓶箭术药水
+	}
+
+	ThornsPotionPack: {
+		DisplayName: 荆棘药水药剂包
+		Tooltip: 打开获得 30 瓶荆棘药水
+	}
+
+	ObsidianSkinPotionPack: {
+		DisplayName: 黑曜石皮肤药水药剂包
+		Tooltip: 打开获得 30 瓶黑曜石皮肤药水
+	}
+
+	WaterWalkingPotionPack: {
+		DisplayName: 水上行走药水药剂包
+		Tooltip: 打开获得 30 瓶水上行走药水
+	}
+
+	MagicPowerPotionPack: {
+		DisplayName: 魔力强化药水药剂包
+		Tooltip: 打开获得 30 瓶魔力强化药水
+	}
+
+	ManaRegenerationPotionPack: {
+		DisplayName: 魔力再生药水药剂包
+		Tooltip: 打开获得 30 瓶魔力再生药水
+	}
+
+	EndurancePotionPack: {
+		DisplayName: 耐力药水药剂包
+		Tooltip: 打开获得 30 瓶耐力药水
+	}
+
+	LifeforcePotionPack: {
+		DisplayName: 生命力药水药剂包
+		Tooltip: 打开获得 30 瓶生命力药水
+	}
+
+	RagePotionPack: {
+		DisplayName: 怒气药水药剂包
+		Tooltip: 打开获得 30 瓶怒气药水
+	}
+
+	WrathPotionPack: {
+		DisplayName: 暴怒药水药剂包
+		Tooltip: 打开获得 30 瓶暴怒药水
+	}
+
+	SummoningPotionPack: {
+		DisplayName: 召唤药水药剂包
+		Tooltip: 打开获得 30 瓶召唤药水
+	}
+
+	BattlePotionPack: {
+		DisplayName: 战斗药水药剂包
+		Tooltip: 打开获得 30 瓶战斗药水
+	}
+
+	BuilderPotionPack: {
+		DisplayName: 建筑工药水药剂包
+		Tooltip: 打开获得 30 瓶建筑工药水
+	}
+
+	InfernoPotionPack: {
+		DisplayName: 狱火药水药剂包
+		Tooltip: 打开获得 30 瓶狱火药水
+	}
+
+	FeatherfallPotionPack: {
+		DisplayName: 羽落药水药剂包
+		Tooltip: 打开获得 30 瓶羽落药水
+	}
+
+	MiningPotionPack: {
+		DisplayName: 挖矿药水药剂包
+		Tooltip: 打开获得 30 瓶挖矿药水
+	}
+
+	SpelunkerPotionPack: {
+		DisplayName: 洞穴探险药水药剂包
+		Tooltip: 打开获得 30 瓶洞穴探险药水
+	}
+
+	GillsPotionPack: {
+		DisplayName: 鱼鳃药水药剂包
+		Tooltip: 打开获得 30 瓶鱼鳃药水
+	}
+
+	FishingPotionPack: {
+		DisplayName: 钓鱼药水药剂包
+		Tooltip: 打开获得 30 瓶钓鱼药水
+	}
+
+	CratePotionPack: {
+		DisplayName: 宝匣药水药剂包
+		Tooltip: 打开获得 30 瓶宝匣药水
+	}
+
+	ShinePotionPack: {
+		DisplayName: 光芒药水药剂包
+		Tooltip: 打开获得 30 瓶光芒药水
+	}
+
+	WarmthPotionPack: {
+		DisplayName: 保暖药水药剂包
+		Tooltip: 打开获得 30 瓶保暖药水
+	}
+
+	CalmingPotionPack: {
+		DisplayName: 镇静药水药剂包
+		Tooltip: 打开获得 30 瓶镇静药水
+	}
+
+	TitanPotionPack: {
+		DisplayName: 泰坦药水药剂包
+		Tooltip: 打开获得 30 瓶泰坦药水
+	}
+
+	HardmodePack: {
+		DisplayName: 困难模式礼包
+		Tooltip: 击败血肉墙后解锁, 右键打开获得困难模式材料与四种职业徽章
+	}
+
+	MechBossPack: {
+		DisplayName: 机械礼包
+		Tooltip: 右键打开获得 99 个三种机械魂、100 个神圣锭和生命果
+	}
+
+	JunglePack: {
+		DisplayName: 丛林礼包
+		Tooltip: 击败世纪之花后解锁, 右键打开获得叶绿锭、生命果与丛林神庙物资
+	}
+
+	SpookyWoodPack: {
+		DisplayName: 阴森木礼包
+		Tooltip: 右键打开获得随机一件阴森套装和随机一件阴森木家具
+	}
+
+	BeetlePack: {
+		DisplayName: 甲虫礼包
+		Tooltip: 右键打开获得甲虫外壳、海龟壳、锯刃镐和稀有诱饵
+	}
+
+	CultistPack: {
+		DisplayName: 教徒礼包
+		Tooltip: 右键打开获得远古操纵机、月钩和无底微光桶
+	}
+
+	MoonLordPack: {
+		DisplayName: 月总礼包
+		Tooltip: 右键打开获得夜明锭、四种碎片、混沌传送杖和一个新手礼包
+	}
+
+	GuideBook: {
+		DisplayName: 计划书
+		Tooltip: 使用查看下一个未获得礼包的合成条件
+		HintKingSlimePack: 下一项：击败史莱姆王，在工作台处用10个凝胶合成史莱姆王礼包。
+		HintEyeOfCthulhuPack: 下一项：击败克苏鲁之眼，在工作台处用10个晶状体合成克苏鲁之眼礼包。
+		HintEvilBossPack: 下一项：击败世界吞噬者或克苏鲁之脑，在工作台处用20个组织样本或20个暗影鳞片合成邪恶Boss礼包。
+		HintHardmodePack: 下一项：击败血肉墙，在秘银砧处用任意职业徽章合成困难模式礼包。
+		HintMechBossPack: 下一项：在秘银砧处用视域之魂、力量之魂、恐惧之魂各1个合成机械礼包。
+		HintJunglePack: 下一项：击败世纪之花，在秘银砧处用一把神庙钥匙合成丛林礼包。
+		HintSpookyWoodPack: 下一项：在秘银砧处用250个阴森木合成阴森木礼包。
+		HintBeetlePack: 下一项：在秘银砧处用一个甲虫外壳合成甲虫礼包。
+		HintCultistPack: 下一项：在秘银砧处用一个远古操纵机合成教徒礼包。
+		HintMoonLordPack: 下一项：在远古操纵机处用一个夜明锭合成月总礼包。
+		AllDone: 我已经没有什么能帮到你的了
+	}
+}
+
+Conditions: {
+	DownedEvilBoss: 需要击败世界吞噬者或克苏鲁之脑
+	DownedSlimeKing: 需要击败史莱姆王
+	// DownedWallOfFlesh: Mods.terraria_gldty.Conditions.DownedWallOfFlesh
+}

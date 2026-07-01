@@ -1,1 +1,228 @@
+Items: {
+	StarterPack: {
+		DisplayName: Starter Pack
+		Tooltip: Basic starting supplies pack, Right-click to open and get abundant starting materials
+	}
 
+	EyeOfCthulhuPack: {
+		DisplayName: Eye of Cthulhu Pack
+		Tooltip: Unlocked after defeating Eye of Cthulhu, Right-click to open for useful supplies
+	}
+
+	EvilBossPack: {
+		DisplayName: Evil Boss Pack
+		Tooltip: Unlocked after defeating Eater of Worlds / Brain of Cthulhu\nRight-click to open for Hellstone and expert accessories
+	}
+
+	QueenBeePack: {
+		DisplayName: Queen Bee Pack
+		Tooltip: Unlocked after defeating Queen Bee, Right-click to open for 20 Abeeminations
+	}
+
+	KingSlimePack: {
+		DisplayName: King Slime Pack
+		Tooltip: Unlocked after defeating King Slime, Right-click to open for various early materials
+	}
+
+	IronskinPotionPack: {
+		DisplayName: Ironskin Potion Pack
+		Tooltip: Open to receive 30 Ironskin Potions
+	}
+
+	RegenerationPotionPack: {
+		DisplayName: Regeneration Potion Pack
+		Tooltip: Open to receive 30 Regeneration Potions
+	}
+
+	SwiftnessPotionPack: {
+		DisplayName: Swiftness Potion Pack
+		Tooltip: Open to receive 30 Swiftness Potions
+	}
+
+	NightOwlPotionPack: {
+		DisplayName: Night Owl Potion Pack
+		Tooltip: Open to receive 30 Night Owl Potions
+	}
+
+	HunterPotionPack: {
+		DisplayName: Hunter Potion Pack
+		Tooltip: Open to receive 30 Hunter Potions
+	}
+
+	ArcheryPotionPack: {
+		DisplayName: Archery Potion Pack
+		Tooltip: Open to receive 30 Archery Potions
+	}
+
+	ThornsPotionPack: {
+		DisplayName: Thorns Potion Pack
+		Tooltip: Open to receive 30 Thorns Potions
+	}
+
+	ObsidianSkinPotionPack: {
+		DisplayName: Obsidian Skin Potion Pack
+		Tooltip: Open to receive 30 Obsidian Skin Potions
+	}
+
+	WaterWalkingPotionPack: {
+		DisplayName: Water Walking Potion Pack
+		Tooltip: Open to receive 30 Water Walking Potions
+	}
+
+	MagicPowerPotionPack: {
+		DisplayName: Magic Power Potion Pack
+		Tooltip: Open to receive 30 Magic Power Potions
+	}
+
+	ManaRegenerationPotionPack: {
+		DisplayName: Mana Regeneration Potion Pack
+		Tooltip: Open to receive 30 Mana Regeneration Potions
+	}
+
+	EndurancePotionPack: {
+		DisplayName: Endurance Potion Pack
+		Tooltip: Open to receive 30 Endurance Potions
+	}
+
+	LifeforcePotionPack: {
+		DisplayName: Lifeforce Potion Pack
+		Tooltip: Open to receive 30 Lifeforce Potions
+	}
+
+	RagePotionPack: {
+		DisplayName: Rage Potion Pack
+		Tooltip: Open to receive 30 Rage Potions
+	}
+
+	WrathPotionPack: {
+		DisplayName: Wrath Potion Pack
+		Tooltip: Open to receive 30 Wrath Potions
+	}
+
+	SummoningPotionPack: {
+		DisplayName: Summoning Potion Pack
+		Tooltip: Open to receive 30 Summoning Potions
+	}
+
+	BattlePotionPack: {
+		DisplayName: Battle Potion Pack
+		Tooltip: Open to receive 30 Battle Potions
+	}
+
+	BuilderPotionPack: {
+		DisplayName: Builder Potion Pack
+		Tooltip: Open to receive 30 Builder Potions
+	}
+
+	InfernoPotionPack: {
+		DisplayName: Inferno Potion Pack
+		Tooltip: Open to receive 30 Inferno Potions
+	}
+
+	FeatherfallPotionPack: {
+		DisplayName: Featherfall Potion Pack
+		Tooltip: Open to receive 30 Featherfall Potions
+	}
+
+	MiningPotionPack: {
+		DisplayName: Mining Potion Pack
+		Tooltip: Open to receive 30 Mining Potions
+	}
+
+	SpelunkerPotionPack: {
+		DisplayName: Spelunker Potion Pack
+		Tooltip: Open to receive 30 Spelunker Potions
+	}
+
+	GillsPotionPack: {
+		DisplayName: Gills Potion Pack
+		Tooltip: Open to receive 30 Gills Potions
+	}
+
+	FishingPotionPack: {
+		DisplayName: Fishing Potion Pack
+		Tooltip: Open to receive 30 Fishing Potions
+	}
+
+	CratePotionPack: {
+		DisplayName: Crate Potion Pack
+		Tooltip: Open to receive 30 Crate Potions
+	}
+
+	ShinePotionPack: {
+		DisplayName: Shine Potion Pack
+		Tooltip: Open to receive 30 Shine Potions
+	}
+
+	WarmthPotionPack: {
+		DisplayName: Warmth Potion Pack
+		Tooltip: Open to receive 30 Warmth Potions
+	}
+
+	CalmingPotionPack: {
+		DisplayName: Calming Potion Pack
+		Tooltip: Open to receive 30 Calming Potions
+	}
+
+	TitanPotionPack: {
+		DisplayName: Titan Potion Pack
+		Tooltip: Open to receive 30 Titan Potions
+	}
+
+	HardmodePack: {
+		DisplayName: Hardmode Pack
+		Tooltip: Unlocked after defeating Wall of Flesh, Right-click to open for hardmode materials and all 4 class emblems
+	}
+
+	MechBossPack: {
+		DisplayName: Mechanical Boss Pack
+		Tooltip: Right-click to open for 99 of each mechanical soul, 100 Hallowed Bars and Life Fruits
+	}
+
+	JunglePack: {
+		DisplayName: Jungle Pack
+		Tooltip: Unlocked after defeating Plantera, Right-click to open for Chlorophyte, Life Fruits and Jungle Temple supplies
+	}
+
+	SpookyWoodPack: {
+		DisplayName: Spooky Wood Pack
+		Tooltip: Right-click to open for a random piece of Spooky armor and a random Spooky Wood furniture
+	}
+
+	BeetlePack: {
+		DisplayName: Beetle Pack
+		Tooltip: Right-click to open for Beetle Husks, Turtle Shells, Picksaw and rare bait
+	}
+
+	CultistPack: {
+		DisplayName: Cultist Pack
+		Tooltip: Right-click to open for Ancient Manipulator, Moon Hook and Bottomless Shimmer Bucket
+	}
+
+	MoonLordPack: {
+		DisplayName: Moon Lord Pack
+		Tooltip: Right-click to open for Luminite, all 4 fragments, Rod of Discord and a Starter Pack
+	}
+
+	GuideBook: {
+		DisplayName: Guide Book
+		Tooltip: Use to view the next uncollected pack's requirements
+		HintKingSlimePack: Next: Defeat King Slime, then craft King Slime Pack at Work Bench using 10 Gel.
+		HintEyeOfCthulhuPack: Next: Defeat Eye of Cthulhu, then craft Eye of Cthulhu Pack at Work Bench using 10 Lens.
+		HintEvilBossPack: Next: Defeat Eater of Worlds or Brain of Cthulhu, then craft Evil Boss Pack at Work Bench using 20 Tissue Sample or 20 Shadow Scale.
+		HintHardmodePack: Next: Defeat Wall of Flesh, then craft Hardmode Pack at Mythril Anvil using any class emblem.
+		HintMechBossPack: Next: Craft Mechanical Boss Pack at Mythril Anvil using 1 Soul of Sight, 1 Soul of Might and 1 Soul of Fright.
+		HintJunglePack: Next: Defeat Plantera, then craft Jungle Pack at Mythril Anvil using a Temple Key.
+		HintSpookyWoodPack: Next: Craft Spooky Wood Pack at Mythril Anvil using 250 Spooky Wood.
+		HintBeetlePack: Next: Craft Beetle Pack at Mythril Anvil using a Beetle Husk.
+		HintCultistPack: Next: Craft Cultist Pack at Mythril Anvil using an Ancient Manipulator.
+		HintMoonLordPack: Next: Craft Moon Lord Pack at Ancient Manipulator using a Luminite Bar.
+		AllDone: I have nothing more to help you with.
+	}
+}
+
+Conditions: {
+	DownedEvilBoss: Need to defeat Eater of Worlds or Brain of Cthulhu
+	DownedSlimeKing: Need to defeat King Slime
+	DownedWallOfFlesh: Mods.terraria_gldty.Conditions.DownedWallOfFlesh
+}
