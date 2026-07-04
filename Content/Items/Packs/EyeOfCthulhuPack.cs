@@ -27,11 +27,17 @@ namespace terraria_gldty.Content.Items.Packs
         public override void RightClick(Player player) {
             var source = player.GetSource_OpenItem(Type);
 
-            // 100 个猩红锭
-            player.QuickSpawnItem(source, ItemID.CrimtaneBar, 100);
+            // 50 个猩红锭
+            player.QuickSpawnItem(source, ItemID.CrimtaneBar, 50);
+
+            // 50 个魔矿锭
+            player.QuickSpawnItem(source, ItemID.DemoniteBar, 50);
 
             // 100 个猩红草种
             player.QuickSpawnItem(source, ItemID.CrimsonSeeds, 100);
+
+            // 100 个腐化种子
+            player.QuickSpawnItem(source, ItemID.CorruptSeeds, 100);
 
             // 30 瓶铁皮药水
             player.QuickSpawnItem(source, ItemID.IronskinPotion, 30);
