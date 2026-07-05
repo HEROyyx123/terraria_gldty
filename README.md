@@ -1,5 +1,7 @@
 # 更懒的体验 — Terraria tModLoader Mod
 
+[![tModLoader](https://img.shields.io/badge/tModLoader-1.4.4+-blue)](https://github.com/tModLoader/tModLoader)
+
 一个让你从开荒到毕业都能偷懒的物资礼包模组。告别无聊的挖矿找材料，把时间花在更有趣的事情上！
 
 ## 📦 礼包总览
