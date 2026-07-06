@@ -4,7 +4,9 @@
 
 一个让你从开荒到毕业都能偷懒的物资礼包模组。告别无聊的挖矿找材料，把时间花在更有趣的事情上！
 
-## 📦 礼包总览
+---
+
+## 📦 原版礼包总览
 
 | 礼包 | 解锁条件 | 合成材料 | 合成台 | 内容亮点 |
 |:----|:--------|:--------|:------:|:--------|
@@ -20,13 +22,37 @@
 | 教徒礼包 | — | 远古操纵机 | 秘银砧 | 远古操纵机、月钩、无底微光桶 |
 | 月总礼包 | — | 夜明锭 | 远古操纵机 | 100 夜明锭、四种月亮碎片、混沌传送杖 + 一个新手礼包 |
 
+> 另外包含 **29 种药剂包**，每种打开获得 30 瓶对应药水，直接引用原版药水图标。
+
+---
+
+## 🔥 灾厄联动礼包
+
+**已订阅 [Calamity Mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2824688072) 时自动解锁！** 更多灾厄材料礼包，无需从零收集。
+
+| 礼包 | 合成材料 | 合成台 | 内容 |
+|:----|:--------|:------:|:----|
+| 荒漠灾虫礼包 | 5 珍珠碎片 | 工作台 | 海洋残渣 ×100、猫神雕像、血珠 ×100 |
+| 史莱姆之神礼包 | 10 纯净凝胶 | 工作台 | 纯净凝胶 ×100、枯萎凝胶 ×100、光泥 |
+| 渊海灾虫礼包 | 1 海波纹章 | 工作台 | 铁靴、吸音隔板、深渊咒符、腐朽雕像、北极潜水装备 |
+| 灾厄之影礼包 | 10 灾厄尘 | 秘银砧 | 灾厄尘 ×99、混乱精华 ×100、日光精华 ×100、冰川精华 ×100 |
+| 利维坦礼包 | 1 利维坦龙涎香 | 秘银砧 | 深渊细胞 ×100、植物混融块 ×200、流明晶 ×100 |
+| 毁灭魔像礼包 | 1 血肉晶簇 | 秘银砧 | 血肉晶簇 ×100 |
+| 亵渎守卫礼包 | 1 正义战旗 | 远古操纵机 | 灵质 ×100 |
+| 亵渎天神礼包 | 1 神圣晶石 | 远古操纵机 | 神圣晶石 ×100、浊火精华 ×100、龙蒿矿 ×500 |
+| 噬魂幽花礼包 | 1 毁灭之灵 | 远古操纵机 | 毁灭之灵 ×100、宇宙之虫、血蠕虫 ×100 |
+| 神明吞噬者礼包 | 1 宇宙锭 | 远古操纵机 | 宇宙锭 ×100、恒温能量 ×100、梦魇魔能 ×100、日蚀之阴碎片 ×100、化神魂精 ×50、星宇砧 |
+| 星流巨械礼包 | 1 星流棱晶 | 星宇砧 | 嘉登熔炉、星流棱晶 ×100、奇迹物质 ×10 |
+| 重生之龙礼包 | 1 龙魂碎片 | 星宇砧 | 龙魂碎片 ×100、圣金源锭 ×100 |
+| 至尊灾厄女巫礼包 | 1 湮灭余烬 | 嘉登熔炉 | 湮灭余烬 ×100 |
+
+---
+
 ## 📖 计划书
 
-新手礼包中附赠 **计划书**，使用后会在聊天栏提示下一个未获得礼包的合成条件，全程指引不迷路！
+新手礼包中附赠 **计划书**，使用后会在聊天栏提示下一个未获得礼包的合成条件。订阅灾厄模组后，计划书还会穿插显示灾厄礼包的提示，全程指引不迷路！
 
-## 🧪 药剂包
-
-包含 29 种药剂包，每种打开获得 30 瓶对应药水。所有药水包直接引用原版药水图标，无需额外贴图。
+---
 
 ## 🎁 摸彩袋系统
 
@@ -35,14 +61,26 @@
 - 支持概率掉落（阴森木礼包中的套装部件各 33%、家具各 ~5.26%）
 - 其余礼包所有物品 100% 必得
 
-## 🔌 模组联动（Call API）
+---
 
-本模组开放了 `Call` 接口，其他模组无需依赖即可调用：
+## 🧩 模组联动框架（ModIntegration）
+
+本模组内置了**模组联动框架**，支持运行时检测已订阅的模组并动态加载对应内容，无需额外依赖。
+
+### 已支持联动的模组
+
+| 模组 | 检测方式 | 联动内容 |
+|:----|:--------|:--------|
+| [Calamity Mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2824688072) | `ModLoader.TryGetMod("CalamityMod")` | 13 个灾厄材料礼包 + 计划书提示 |
+
+### 给模组开发者的 Call API
+
+本模组开放了 `Call` 接口，其他模组无需硬依赖即可调用：
 
 ```csharp
 var mod = ModLoader.GetMod("terraria_gldty");
 
-// 获取所有礼包 Key
+// 获取所有礼包 Key（含原版 + 联动模组）
 mod.Call("GetPackKeys");
 
 // 根据 Key 获取类名
@@ -51,23 +89,39 @@ mod.Call("GetPackClassName", "hardmode");  // → "HardmodePack"
 // 覆盖指定礼包的掉落内容（完全替换）
 mod.Call("OverridePackContents", "hardmode", (ItemLoot loot) => {
     loot.Add(ItemDropRule.Common(ItemID.SoulofLight, 1, 50, 50));
-    loot.Add(ItemDropRule.Common(YourModItem, 1, 10, 10));
 });
+
+// 检查某个联动模组是否已加载
+mod.Call("IsModLoaded", "CalamityMod");  // → true / false
+
+// 获取所有联动模组注册的 PackKeys
+mod.Call("GetModIntegrationKeys");
 ```
 
-支持的礼包 Key：`starter`, `eyeofcthulhu`, `evilboss`, `kingslime`, `hardmode`, `mechboss`, `jungle`, `spookywood`, `beetle`, `cultist`, `moonlord`
+### 支持的礼包 Key
+
+**原版：** `starter`, `eyeofcthulhu`, `evilboss`, `kingslime`, `hardmode`, `mechboss`, `jungle`, `spookywood`, `beetle`, `cultist`, `moonlord`
+
+**灾厄（有 CalamityMod 时）：** `desertscourge`, `slimgod`, `aquaticscourge`, `calamitasclone`, `leviathan`, `ravager`, `profanedguardians`, `providence`, `polterghast`, `devourerofgods`, `exomechs`, `yharon`, `calamitas`
+
+---
 
 ## 🌐 本地化支持
 
 - [x] English (en-US)
 - [x] 简体中文 (zh-Hans)
 
+---
+
 ## 🔧 安装方法
 
 1. 确保已安装 [tModLoader](https://store.steampowered.com/app/1281930/)（Steam 版）
-2. 在 tModLoader 的**模组浏览器**中搜索"更懒的体验"或"terraria_gldty"
+2. 在 tModLoader 的 **模组浏览器** 中搜索"更懒的体验"或"terraria_gldty"
 3. 下载并启用
 4. 创建新世界，新手大礼包自动获得！
+5. 如需灾厄联动内容，同时订阅 **Calamity Mod** 即可
+
+---
 
 ## 🛠️ 开发
 
@@ -89,28 +143,37 @@ git clone https://github.com/xuebao/terraria_gldty.git
 ```
 terraria_gldty/
 ├── Common/
+│   ├── ModIntegration/                  # 模组联动框架
+│   │   ├── IModIntegration.cs           #   联动接口
+│   │   ├── ModIntegrationSystem.cs      #   中央调度器
+│   │   ├── ModIntegrationPlayer.cs      #   联动存档
+│   │   └── CalamityIntegration/         #   灾厄联动实现
+│   │       ├── CalamityIntegration.cs
+│   │       ├── CalamityItemHelper.cs
+│   │       └── CalamityRecipeConditions.cs
 │   ├── Players/
-│   │   └── PackPlayer.cs              # 玩家数据（礼包领取状态）
+│   │   └── PackPlayer.cs                # 玩家数据（礼包领取状态）
 │   └── Systems/
-│       ├── PackRecipeConditions.cs     # 自定义合成条件
-│       ├── PackRecipeGroups.cs         # 合成配方组（职业徽章组）
-│       └── PackLootRegistry.cs         # 掉落注册中心 + Call 接口
+│       ├── PackRecipeConditions.cs      # 自定义合成条件
+│       ├── PackRecipeGroups.cs          # 合成配方组（职业徽章组）
+│       └── PackLootRegistry.cs          # 掉落注册中心 + Call 接口
 ├── Content/
 │   └── Items/
-│       └── Packs/                     # 所有礼包物品
-│           ├── PotionPacks.cs          # 29 种药剂包（基类继承）
-│           ├── StarterPack.cs          # 新手大礼包
-│           ├── GuideBook.cs            # 计划书
-│           ├── EyeOfCthulhuPack.cs     # 克苏鲁之眼礼包
-│           ├── EvilBossPack.cs         # 邪恶 Boss 礼包
-│           ├── KingSlimePack.cs        # 史莱姆王礼包
-│           ├── HardmodePack.cs         # 困难模式礼包
-│           ├── MechBossPack.cs         # 机械礼包
-│           ├── JunglePack.cs           # 丛林礼包
-│           ├── SpookyWoodPack.cs        # 阴森木礼包
-│           ├── BeetlePack.cs           # 甲虫礼包
-│           ├── CultistPack.cs          # 教徒礼包
-│           └── MoonLordPack.cs         # 月总礼包
+│       └── Packs/                       # 所有礼包物品
+│           ├── Calamity/                # 灾厄联动礼包（13个）
+│           ├── PotionPacks.cs           # 29 种药剂包（基类继承）
+│           ├── StarterPack.cs
+│           ├── GuideBook.cs
+│           ├── EyeOfCthulhuPack.cs
+│           ├── EvilBossPack.cs
+│           ├── KingSlimePack.cs
+│           ├── HardmodePack.cs
+│           ├── MechBossPack.cs
+│           ├── JunglePack.cs
+│           ├── SpookyWoodPack.cs
+│           ├── BeetlePack.cs
+│           ├── CultistPack.cs
+│           └── MoonLordPack.cs
 ├── Localization/
 │   ├── en-US_Mods.terraria_gldty.hjson
 │   └── zh-Hans_Mods.terraria_gldty.hjson
@@ -119,6 +182,8 @@ terraria_gldty/
 └── terraria_gldty.csproj
 ```
 
+---
+
 ## 📄 许可证
 
 [MIT](LICENSE)
@@ -126,4 +191,5 @@ terraria_gldty/
 ## 🙏 致谢
 
 - [tModLoader](https://github.com/tModLoader/tModLoader) 团队
+- [Calamity Mod](https://steamcommunity.com/sharedfiles/filedetails/?id=2824688072) 团队
 - 所有贡献者和玩家
