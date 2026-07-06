@@ -43,6 +43,15 @@ namespace terraria_gldty.Common.Systems
             return PackKeys.TryGetValue(packKey, out var name) ? name : null;
         }
 
+        /// <summary>
+        /// 运行时注册额外的 PackKeys（由 ModIntegrationSystem 在加载时调用）
+        /// </summary>
+        public static void AddPackKeys(Dictionary<string, string> additionalKeys) {
+            foreach (var kvp in additionalKeys) {
+                PackKeys[kvp.Key] = kvp.Value;
+            }
+        }
+
         /// <summary> 检查是否有覆盖规则 </summary>
         internal static bool HasOverride(string packKey) {
             return OverrideLoot.ContainsKey(packKey);
