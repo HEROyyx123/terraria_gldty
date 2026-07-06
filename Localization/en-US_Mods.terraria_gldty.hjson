@@ -14,11 +14,6 @@ Items: {
 		Tooltip: Unlocked after defeating Eater of Worlds / Brain of Cthulhu\nRight-click to open for Hellstone and expert accessories
 	}
 
-	QueenBeePack: {
-		DisplayName: Queen Bee Pack
-		Tooltip: Unlocked after defeating Queen Bee, Right-click to open for 20 Abeeminations
-	}
-
 	KingSlimePack: {
 		DisplayName: King Slime Pack
 		Tooltip: Unlocked after defeating King Slime, Right-click to open for various early materials
@@ -218,11 +213,112 @@ Items: {
 		HintCultistPack: Next: Craft Cultist Pack at Mythril Anvil using an Ancient Manipulator.
 		HintMoonLordPack: Next: Craft Moon Lord Pack at Ancient Manipulator using a Luminite Bar.
 		AllDone: I have nothing more to help you with.
+
+		Calamity: {
+			HintDesertScourgePack: Next: Craft Desert Scourge Pack at Work Bench using 5 Pearl Shards.
+			HintSlimeGodPack: Next: Craft Slime God Pack at Work Bench using 10 Purified Gel.
+			HintAquaticScourgePack: Next: Craft Aquatic Scourge Pack at Work Bench using an Aquatic Emblem.
+			HintCalamitasClonePack: Next: Craft Calamitas Clone Pack at Mythril Anvil using 10 Ashes of Calamity.
+			HintLeviathanPack: Next: Craft Leviathan Pack at Mythril Anvil using Leviathan Ambergris.
+			HintRavagerPack: Next: Craft Ravager Pack at Mythril Anvil using a Fleshy Geode.
+			HintProfanedGuardiansPack: Next: Craft Profaned Guardians Pack at Ancient Manipulator using a Warbanner of the Righteous.
+			HintProvidencePack: Next: Craft Providence Pack at Ancient Manipulator using a Divine Geode.
+			HintPolterghastPack: Next: Craft Polterghast Pack at Ancient Manipulator using a Ruinous Soul.
+			HintDevourerOfGodsPack: Next: Craft Devourer of Gods Pack at Ancient Manipulator using a Cosmilite Bar.
+			HintExoMechsPack: Next: Craft Exo Mechs Pack at Cosmic Anvil using an Exo Prism.
+			HintYharonPack: Next: Craft Yharon Pack at Cosmic Anvil using a Yharon Soul Fragment.
+			HintCalamitasPack: Next: Craft Calamitas Pack at Draedon's Forge using Ashes of Annihilation.
+		}
+	}
+
+	// === Calamity packs ===
+	DesertScourgePack: {
+		DisplayName: Desert Scourge Pack
+		Tooltip: Right-click to obtain ocean materials
+	}
+
+	SlimeGodPack: {
+		DisplayName: Slime God Pack
+		Tooltip: Right-click to obtain Slime God materials
+	}
+
+	AquaticScourgePack: {
+		DisplayName: Aquatic Scourge Pack
+		Tooltip: Right-click to obtain Aquatic Scourge materials
+	}
+
+	CalamitasClonePack: {
+		DisplayName: Calamitas Clone Pack
+		Tooltip: Right-click to obtain Calamitas Clone materials
+	}
+
+	LeviathanPack: {
+		DisplayName: Leviathan Pack
+		Tooltip: Right-click to obtain Leviathan materials
+	}
+
+	RavagerPack: {
+		DisplayName: Ravager Pack
+		Tooltip: Right-click to obtain Ravager materials
+	}
+
+	ProfanedGuardiansPack: {
+		DisplayName: Profaned Guardians Pack
+		Tooltip: Right-click to obtain Profaned materials
+	}
+
+	ProvidencePack: {
+		DisplayName: Providence Pack
+		Tooltip: Right-click to obtain Providence materials
+	}
+
+	PolterghastPack: {
+		DisplayName: Polterghast Pack
+		Tooltip: Right-click to obtain Polterghast materials
+	}
+
+	DevourerOfGodsPack: {
+		DisplayName: Devourer of Gods Pack
+		Tooltip: Right-click to obtain DoG materials
+	}
+
+	ExoMechsPack: {
+		DisplayName: Exo Mechs Pack
+		Tooltip: Right-click to obtain Exo Mech materials
+	}
+
+	YharonPack: {
+		DisplayName: Yharon Pack
+		Tooltip: Right-click to obtain Yharon materials
+	}
+
+	CalamitasPack: {
+		DisplayName: Calamitas Pack
+		Tooltip: Right-click to obtain Calamitas materials
 	}
 }
 
 Conditions: {
 	DownedEvilBoss: Need to defeat Eater of Worlds or Brain of Cthulhu
 	DownedSlimeKing: Need to defeat King Slime
-	DownedWallOfFlesh: Mods.terraria_gldty.Conditions.DownedWallOfFlesh
+	DownedWallOfFlesh: Need to defeat Wall of Flesh
+
+	Calamity: {
+		DownedDesertScourge: Mods.terraria_gldty.Conditions.Calamity.DownedDesertScourge
+		DownedSlimeGod: Mods.terraria_gldty.Conditions.Calamity.DownedSlimeGod
+		DownedCrabulon: Mods.terraria_gldty.Conditions.Calamity.DownedCrabulon
+		DownedHiveMind: Mods.terraria_gldty.Conditions.Calamity.DownedHiveMind
+		DownedPerforators: Mods.terraria_gldty.Conditions.Calamity.DownedPerforators
+		DownedAquaticScourge: Mods.terraria_gldty.Conditions.Calamity.DownedAquaticScourge
+		DownedCalamitasClone: Mods.terraria_gldty.Conditions.Calamity.DownedCalamitasClone
+		DownedLeviathan: Mods.terraria_gldty.Conditions.Calamity.DownedLeviathan
+		DownedRavager: Mods.terraria_gldty.Conditions.Calamity.DownedRavager
+		DownedProfanedGuardians: Mods.terraria_gldty.Conditions.Calamity.DownedProfanedGuardians
+		DownedProvidence: Mods.terraria_gldty.Conditions.Calamity.DownedProvidence
+		DownedPolterghast: Mods.terraria_gldty.Conditions.Calamity.DownedPolterghast
+		DownedDevourerOfGods: Mods.terraria_gldty.Conditions.Calamity.DownedDevourerOfGods
+		DownedExoMechs: Mods.terraria_gldty.Conditions.Calamity.DownedExoMechs
+		DownedYharon: Mods.terraria_gldty.Conditions.Calamity.DownedYharon
+		DownedCalamitas: Mods.terraria_gldty.Conditions.Calamity.DownedCalamitas
+	}
 }

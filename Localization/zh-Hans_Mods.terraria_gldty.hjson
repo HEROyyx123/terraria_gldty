@@ -14,11 +14,6 @@ Items: {
 		Tooltip: 击败世界吞噬者/克苏鲁之脑后解锁, 右键打开获得狱石与专家饰品
 	}
 
-	QueenBeePack: {
-		DisplayName: 蜂后礼包
-		Tooltip: 击败蜂后后解锁,右键打开获得 20 个憎恶之蜂
-	}
-
 	KingSlimePack: {
 		DisplayName: 史莱姆王礼包
 		Tooltip: 击败史莱姆王后解锁, 右键打开获得多种前期物资
@@ -218,11 +213,112 @@ Items: {
 		HintCultistPack: 下一项：在秘银砧处用一个远古操纵机合成教徒礼包。
 		HintMoonLordPack: 下一项：在远古操纵机处用一个夜明锭合成月总礼包。
 		AllDone: 我已经没有什么能帮到你的了
+
+		Calamity: {
+			HintDesertScourgePack: 下一项：在工作台处用5个珍珠碎片合成荒漠灾虫礼包。
+			HintSlimeGodPack: 下一项：在工作台处用10个纯净凝胶合成史莱姆之神礼包。
+			HintAquaticScourgePack: 下一项：在工作台处用1个海波纹章合成渊海灾虫礼包。
+			HintCalamitasClonePack: 下一项：在秘银砧处用10个灾厄尘合成灾厄之影礼包。
+			HintLeviathanPack: 下一项：在秘银砧处用1个利维坦龙涎香合成利维坦礼包。
+			HintRavagerPack: 下一项：在秘银砧处用1个血肉晶簇合成毁灭魔像礼包。
+			HintProfanedGuardiansPack: 下一项：在远古操纵机处用1个正义战旗合成亵渎守卫礼包。
+			HintProvidencePack: 下一项：在远古操纵机处用1个神圣晶石合成亵渎天神礼包。
+			HintPolterghastPack: 下一项：在远古操纵机处用1个毁灭之灵合成噬魂幽花礼包。
+			HintDevourerOfGodsPack: 下一项：在远古操纵机处用1个宇宙锭合成神明吞噬者礼包。
+			HintExoMechsPack: 下一项：在星宇砧处用1个星流棱晶合成星流巨械礼包。
+			HintYharonPack: 下一项：在星宇砧处用1个龙魂碎片合成重生之龙礼包。
+			HintCalamitasPack: 下一项：在嘉登熔炉处用1个湮灭余烬合成至尊灾厄女巫礼包。
+		}
+	}
+
+	// === Calamity packs ===
+	DesertScourgePack: {
+		DisplayName: 荒漠灾虫礼包
+		Tooltip: 右键打开获得大量海洋材料
+	}
+
+	SlimeGodPack: {
+		DisplayName: 史莱姆之神礼包
+		Tooltip: 右键打开获得史莱姆之神相关材料
+	}
+
+	AquaticScourgePack: {
+		DisplayName: 渊海灾虫礼包
+		Tooltip: 右键打开获得渊海灾虫相关材料
+	}
+
+	CalamitasClonePack: {
+		DisplayName: 灾厄之影礼包
+		Tooltip: 右键打开获得灾厄之影相关材料
+	}
+
+	LeviathanPack: {
+		DisplayName: 利维坦礼包
+		Tooltip: 右键打开获得利维坦相关材料
+	}
+
+	RavagerPack: {
+		DisplayName: 毁灭魔像礼包
+		Tooltip: 右键打开获得毁灭魔像相关材料
+	}
+
+	ProfanedGuardiansPack: {
+		DisplayName: 亵渎守卫礼包
+		Tooltip: 右键打开获得亵渎守卫相关材料
+	}
+
+	ProvidencePack: {
+		DisplayName: 亵渎天神礼包
+		Tooltip: 右键打开获得亵渎天神相关材料
+	}
+
+	PolterghastPack: {
+		DisplayName: 噬魂幽花礼包
+		Tooltip: 右键打开获得噬魂幽花相关材料
+	}
+
+	DevourerOfGodsPack: {
+		DisplayName: 神明吞噬者礼包
+		Tooltip: 右键打开获得神明吞噬者相关材料
+	}
+
+	ExoMechsPack: {
+		DisplayName: 星流巨械礼包
+		Tooltip: 右键打开获得星流巨械相关材料
+	}
+
+	YharonPack: {
+		DisplayName: 重生之龙礼包
+		Tooltip: 右键打开获得重生之龙相关材料
+	}
+
+	CalamitasPack: {
+		DisplayName: 至尊灾厄女巫礼包
+		Tooltip: 右键打开获得至尊灾厄女巫相关材料
 	}
 }
 
 Conditions: {
 	DownedEvilBoss: 需要击败世界吞噬者或克苏鲁之脑
 	DownedSlimeKing: 需要击败史莱姆王
-	// DownedWallOfFlesh: Mods.terraria_gldty.Conditions.DownedWallOfFlesh
+	DownedWallOfFlesh: 需要击败血肉墙
+
+	Calamity: {
+		// DownedDesertScourge: Mods.terraria_gldty.Conditions.Calamity.DownedDesertScourge
+		// DownedSlimeGod: Mods.terraria_gldty.Conditions.Calamity.DownedSlimeGod
+		// DownedCrabulon: Mods.terraria_gldty.Conditions.Calamity.DownedCrabulon
+		// DownedHiveMind: Mods.terraria_gldty.Conditions.Calamity.DownedHiveMind
+		// DownedPerforators: Mods.terraria_gldty.Conditions.Calamity.DownedPerforators
+		// DownedAquaticScourge: Mods.terraria_gldty.Conditions.Calamity.DownedAquaticScourge
+		// DownedCalamitasClone: Mods.terraria_gldty.Conditions.Calamity.DownedCalamitasClone
+		// DownedLeviathan: Mods.terraria_gldty.Conditions.Calamity.DownedLeviathan
+		// DownedRavager: Mods.terraria_gldty.Conditions.Calamity.DownedRavager
+		// DownedProfanedGuardians: Mods.terraria_gldty.Conditions.Calamity.DownedProfanedGuardians
+		// DownedProvidence: Mods.terraria_gldty.Conditions.Calamity.DownedProvidence
+		// DownedPolterghast: Mods.terraria_gldty.Conditions.Calamity.DownedPolterghast
+		// DownedDevourerOfGods: Mods.terraria_gldty.Conditions.Calamity.DownedDevourerOfGods
+		// DownedExoMechs: Mods.terraria_gldty.Conditions.Calamity.DownedExoMechs
+		// DownedYharon: Mods.terraria_gldty.Conditions.Calamity.DownedYharon
+		// DownedCalamitas: Mods.terraria_gldty.Conditions.Calamity.DownedCalamitas
+	}
 }
