@@ -68,10 +68,12 @@ namespace terraria_gldty.Common.ModIntegration.CalamityIntegration
         }
 
         /// <summary>
-        /// 增强原版礼包——预留接口，由你后续计划添加
+        /// 增强原版礼包——预留接口
         /// </summary>
         public void ModifyExistingPackLoot(string packKey, ItemLoot itemLoot) {
-            // 暂空，等待你后续添加
+            // 在这里为原版礼包添加额外物品
+            if(packKey=="hardmode"){
+            AddItem(itemLoot, "RogueEmblem", 1);}
         }
 
         /// <summary>
