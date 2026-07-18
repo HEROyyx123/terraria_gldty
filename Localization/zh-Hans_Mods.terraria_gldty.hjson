@@ -296,6 +296,38 @@ Items: {
 		DisplayName: 至尊灾厄女巫礼包
 		Tooltip: 右键打开获得至尊灾厄女巫相关材料
 	}
+
+	BlackHoleStone: {
+		DisplayName: 黑洞石
+		Tooltip: 在物品栏中即可生效，扩大物品拾取范围并过滤拾取物品，右键打开设置界面
+	}
+
+	EnchantingWorkshop: {
+		DisplayName: 附魔作坊
+		Tooltip: 兼具工匠作坊功能，可直接合成指定词条的武器或饰品，放置后右键打开附魔界面
+	}
+}
+
+BlackHoleStone: {
+	DisplayName: 黑洞石
+	Tooltip: 在物品栏中即可生效，扩大物品拾取范围并过滤拾取物品，右键打开设置界面
+	PickUpAll: 拾取所有物品
+	FilterLabel: 过滤器（点击放入物品）
+	RangeLabel: 拾取范围（格）
+	Hint: 提示：将物品放入过滤器格子可只拾取该物品
+}
+
+EnchantingWorkshop: {
+	DisplayName: 附魔作坊
+	Tooltip: 兼具工匠作坊功能，可直接合成指定词条的武器或饰品，放置后右键打开附魔界面
+	Instruction: 将武器或饰品放入槽位，选择词条直接合成
+	PlaceItem: 请放入可重铸的物品
+	Cost: 费用
+	CostShort: 费
+	CannotReforge: 该物品无法重铸
+	NoPrefixes: 无可用词条
+	NotEnoughCoins: 金币不足！
+	Crafted: 附魔成功！
 }
 
 Conditions: {
@@ -322,3 +354,5 @@ Conditions: {
 		// DownedCalamitas: Mods.terraria_gldty.Conditions.Calamity.DownedCalamitas
 	}
 }
+
+// Tiles.EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile

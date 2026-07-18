@@ -296,6 +296,38 @@ Items: {
 		DisplayName: Calamitas Pack
 		Tooltip: Right-click to obtain Calamitas materials
 	}
+
+	BlackHoleStone: {
+		DisplayName: Black Hole Stone
+		Tooltip: ""
+	}
+
+	EnchantingWorkshop: {
+		DisplayName: Enchanting Workshop
+		Tooltip: ""
+	}
+}
+
+BlackHoleStone: {
+	DisplayName: Black Hole Stone
+	Tooltip: Works from inventory, expands item pickup range and filters items，Right-click to open settings
+	PickUpAll: Pick Up All Items
+	FilterLabel: Filter (Click to place item)
+	RangeLabel: Pickup Range (tiles)
+	Hint: Hint: Place items into filter slots to only pick up those items
+}
+
+EnchantingWorkshop: {
+	DisplayName: Enchanting Workshop
+	Tooltip: Functions as Tinkerer's Workshop, can craft items with specific prefixes，Place and right-click to open the enchanting interface
+	Instruction: Place a weapon or accessory in the slot, then choose a prefix to craft
+	PlaceItem: Place a reforgeable item
+	Cost: Cost
+	CostShort: $
+	CannotReforge: This item cannot be reforged
+	NoPrefixes: No applicable prefixes
+	NotEnoughCoins: Not enough coins!
+	Crafted: Enchantment successful!
 }
 
 Conditions: {
@@ -322,3 +354,5 @@ Conditions: {
 		DownedCalamitas: Mods.terraria_gldty.Conditions.Calamity.DownedCalamitas
 	}
 }
+
+Tiles.EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile
