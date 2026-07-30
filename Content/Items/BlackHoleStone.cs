@@ -8,9 +8,9 @@ namespace terraria_gldty.Content.Items
     public class BlackHoleStone : ModItem
     {
         public override void SetStaticDefaults() {
-            // 微光转换：负重石/不加重石 -> 黑洞石
+            // 微光嬗变
             ItemID.Sets.ShimmerTransformToItem[ItemID.EncumberingStone] = Type;
-            // ItemID.Sets.ShimmerTransformToItem[ItemID.UnencumberingStone] = Type;
+            ItemID.Sets.ShimmerTransformToItem[ItemID.UncumberingStone] = Type;
         }
 
         public override void SetDefaults() {
@@ -19,6 +19,12 @@ namespace terraria_gldty.Content.Items
             Item.maxStack = 1;
             Item.value = 0;
             Item.rare = ItemRarityID.Blue;
+        }
+
+        public override void AddRecipes(){
+            CreateRecipe()
+            .AddIngredient(ItemID.EncumberingStone, 1) 
+            .Register();                               
         }
 
         public override bool CanRightClick() => true;

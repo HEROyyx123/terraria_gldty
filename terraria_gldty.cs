@@ -7,33 +7,35 @@ namespace terraria_gldty
     public class terraria_gldty : Mod
     {
         public override void Load() {
-            // 初始化自定义合成条件
+            // ��ʼ���Զ���ϳ�����
             Common.Systems.PackRecipeConditions.Initialize();
 
-            // 初始化模组联动系统（检测并加载 CalamityMod 等联动模组）
+            // ��ʼ��ģ������ϵͳ����Ⲣ���� CalamityMod ������ģ�飩
             Common.ModIntegration.ModIntegrationSystem.RegisterIntegration(
                 new Common.ModIntegration.CalamityIntegration.CalamityIntegration()
             );
         }
 
+
+
         /// <summary>
-        /// 供其他 Mod 调用的接口（通过 ModLoader.GetMod("terraria_gldty").Call(...) 调用）
+        /// ������ Mod ���õĽӿڣ�ͨ�� ModLoader.GetMod("terraria_gldty").Call(...) ���ã�
         ///
-        /// 支持的方法：
+        /// ֧�ֵķ�����
         ///   Call("GetPackKeys")
-        ///       → 返回所有礼包 Key 列表（含原版 + 联动模组）
+        ///       �� ����������� Key �б�����ԭ�� + ����ģ�飩
         ///
         ///   Call("GetPackClassName", "hardmode")
-        ///       → 返回 "HardmodePack"
+        ///       �� ���� "HardmodePack"
         ///
         ///   Call("OverridePackContents", "hardmode", Action{ItemLoot} callback)
-        ///       → 注册覆盖掉落规则，此礼包将使用 callback 代替默认内容
+        ///       �� ע�Ḳ�ǵ�����򣬴������ʹ�� callback ����Ĭ������
         ///
         ///   Call("IsModLoaded", "CalamityMod")
-        ///       → 检查某个联动模组是否已加载
+        ///       �� ���ĳ������ģ���Ƿ��Ѽ���
         ///
         ///   Call("GetModIntegrationKeys")
-        ///       → 返回所有联动模组注册的 PackKeys
+        ///       �� ������������ģ��ע��� PackKeys
         /// </summary>
         public override object Call(params object[] args) {
             if (args == null || args.Length == 0)

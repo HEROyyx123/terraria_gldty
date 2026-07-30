@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,9 +10,6 @@ namespace terraria_gldty.Content.Items.Packs
     /// </summary>
     public class HardmodePack : ModItem
     {
-        // // TODO: 替换为自定义占位 PNG 后删除此行
-        // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
-
         public override void SetDefaults() {
             Item.width = 32;
             Item.height = 32;
@@ -27,37 +25,36 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofLight, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.PlatinumCoin, 1, 10, 10));
+            itemLoot.Add(ItemDropRule.Common(ItemID.WarriorEmblem));
+            itemLoot.Add(ItemDropRule.Common(ItemID.RangerEmblem));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SorcererEmblem));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SummonerEmblem));
+            itemLoot.Add(ItemDropRule.Common(ItemID.PixieDust, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Ichor, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.CursedFlame, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.CrystalShard, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.UnicornHorn, 1, 10, 10));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FrostCore, 1, 4, 4));
+            itemLoot.Add(ItemDropRule.Common(ItemID.AncientBattleArmorMaterial, 1, 4, 4));
+            itemLoot.Add(ItemDropRule.Common(ItemID.PirateMap, 1, 10, 10));
+            itemLoot.Add(ItemDropRule.Common(ItemID.QueenSlimeCrystal, 1, 10, 10));
+
+            // 联动模组增强（如有灾厄，追加灾厄材料）
+            Common.ModIntegration.ModIntegrationSystem.ModifyAllExistingPacks("hardmode", itemLoot);
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            player.QuickSpawnItem(source, ItemID.SoulofLight, 99);
-            player.QuickSpawnItem(source, ItemID.SoulofNight, 99);
-            player.QuickSpawnItem(source, ItemID.SoulofFlight, 99);
-            player.QuickSpawnItem(source, ItemID.PlatinumCoin, 10);
-            player.QuickSpawnItem(source, ItemID.WarriorEmblem);
-            player.QuickSpawnItem(source, ItemID.RangerEmblem);
-            player.QuickSpawnItem(source, ItemID.SorcererEmblem);
-            player.QuickSpawnItem(source, ItemID.SummonerEmblem);
-            player.QuickSpawnItem(source, ItemID.PixieDust, 99);
-            player.QuickSpawnItem(source, ItemID.Ichor, 99);
-            player.QuickSpawnItem(source, ItemID.CursedFlame, 99);
-            player.QuickSpawnItem(source, ItemID.CrystalShard, 99);
-            player.QuickSpawnItem(source, ItemID.UnicornHorn, 10);
-            player.QuickSpawnItem(source, ItemID.FrostCore, 4);
-            // 禁戒碎片
-            player.QuickSpawnItem(source, ItemID.AncientBattleArmorMaterial, 4);
-            player.QuickSpawnItem(source, ItemID.PirateMap, 10);
-            // 明胶水晶
-            player.QuickSpawnItem(source, ItemID.QueenSlimeCrystal, 10);
-
-            // 标记已获得
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedHardmodePack = true;
         }
 
         public override void AddRecipes() {
-            // 使用 RecipeGroup 让四种职业徽章任意一种都能合成
             CreateRecipe()
-                .AddRecipeGroup("terraria_gldty:AnyEmblem", 1)
+                .AddRecipeGroup("terraria_gldty:AnyEmblem")
                 .AddTile(TileID.MythrilAnvil)
                 .AddCondition(Common.Systems.PackRecipeConditions.DownedWallOfFlesh)
                 .Register();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -10,9 +11,6 @@ namespace terraria_gldty.Content.Items.Packs
     /// </summary>
     public class SpookyWoodPack : ModItem
     {
-        // // TODO: 替换为自定义占位 PNG 后删除此行
-        // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
-
         /// <summary> 所有阴森木家具的 ID 列表 </summary>
         private static readonly List<int> SpookyFurniture = new()
         {
@@ -52,19 +50,19 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            // 阴森套随机一件（33% 各）
+            itemLoot.Add(ItemDropRule.OneFromOptions(1,
+                ItemID.SpookyHelmet,
+                ItemID.SpookyBreastplate,
+                ItemID.SpookyLeggings
+            ));
+
+            // 阴森木家具随机一件（~5.26% 各）
+            itemLoot.Add(ItemDropRule.OneFromOptions(1, SpookyFurniture.ToArray()));
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            // 随机给一件阴森套装
-            int armorChoice = Main.rand.Next(3);
-            if (armorChoice == 0) player.QuickSpawnItem(source, ItemID.SpookyHelmet);
-            else if (armorChoice == 1) player.QuickSpawnItem(source, ItemID.SpookyBreastplate);
-            else player.QuickSpawnItem(source, ItemID.SpookyLeggings);
-
-            // 随机给一件阴森木家具
-            int furnitureItem = SpookyFurniture[Main.rand.Next(SpookyFurniture.Count)];
-            player.QuickSpawnItem(source, furnitureItem);
-
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedSpookyWoodPack = true;
         }
 

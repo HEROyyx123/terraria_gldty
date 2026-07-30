@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,37 +25,19 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.GoblinBattleStandard, 1, 10, 10));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FallenStar, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.JungleSpores, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Vine, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Stinger, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Cobweb, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FlinxFur, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Silk, 1, 99, 99));
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            // 999 个凝胶
-            player.QuickSpawnItem(source, ItemID.Gel, 999);
-
-            // 10 个哥布林战旗
-            player.QuickSpawnItem(source, ItemID.GoblinBattleStandard, 10);
-
-            // 999 个坠落之星
-            player.QuickSpawnItem(source, ItemID.FallenStar, 999);
-
-            // 99 个丛林孢子
-            player.QuickSpawnItem(source, ItemID.JungleSpores, 99);
-
-            // 99 个藤蔓
-            player.QuickSpawnItem(source, ItemID.Vine, 99);
-
-            // 99 个毒刺
-            player.QuickSpawnItem(source, ItemID.Stinger, 99);
-
-            // 999 个蛛网
-            player.QuickSpawnItem(source, ItemID.Cobweb, 999);
-
-            // 99 个小雪怪皮毛
-            player.QuickSpawnItem(source, ItemID.FlinxFur, 99);
-
-            // 99 个丝绸
-            player.QuickSpawnItem(source, ItemID.Silk, 99);
-
-            // 标记已获得
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedKingSlimePack = true;
         }
 

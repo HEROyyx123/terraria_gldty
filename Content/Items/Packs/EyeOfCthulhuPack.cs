@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,40 +25,20 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ItemID.CrimtaneBar, 1, 50, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.DemoniteBar, 1, 50, 50));
+            itemLoot.Add(ItemDropRule.Common(ItemID.CrimsonSeeds, 1, 100, 100));
+            itemLoot.Add(ItemDropRule.Common(ItemID.CorruptSeeds, 1, 100, 100));
+            itemLoot.Add(ItemDropRule.Common(ItemID.IronskinPotion, 1, 30, 30));
+            itemLoot.Add(ItemDropRule.Common(ItemID.LifeCrystal, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.ManaCrystal, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Obsidian, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.PlatinumCoin, 1, 10, 10));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Abeemination, 1, 20, 20));
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            // 50 个猩红锭
-            player.QuickSpawnItem(source, ItemID.CrimtaneBar, 50);
-
-            // 50 个魔矿锭
-            player.QuickSpawnItem(source, ItemID.DemoniteBar, 50);
-
-            // 100 个猩红草种
-            player.QuickSpawnItem(source, ItemID.CrimsonSeeds, 100);
-
-            // 100 个腐化种子
-            player.QuickSpawnItem(source, ItemID.CorruptSeeds, 100);
-
-            // 30 瓶铁皮药水
-            player.QuickSpawnItem(source, ItemID.IronskinPotion, 30);
-
-            // 99 个生命水晶
-            player.QuickSpawnItem(source, ItemID.LifeCrystal, 99);
-
-            // 99 个魔力水晶
-            player.QuickSpawnItem(source, ItemID.ManaCrystal, 99);
-
-            // 99 个黑曜石
-            player.QuickSpawnItem(source, ItemID.Obsidian, 99);
-
-            // 10 个铂金币
-            player.QuickSpawnItem(source, ItemID.PlatinumCoin, 10);
-
-            // 20 个憎恶之蜂（蜂后召唤物）
-            player.QuickSpawnItem(source, ItemID.Abeemination, 20);
-
-            // 标记已获得
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedEyeOfCthulhuPack = true;
         }
 

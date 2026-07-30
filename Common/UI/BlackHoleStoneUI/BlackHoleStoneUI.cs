@@ -49,11 +49,11 @@ namespace terraria_gldty.Common.UI.BlackHoleStoneUI
             titleText.TextColor = Color.LightSkyBlue;
             panel.Append(titleText);
 
-            closeButton = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonDelete"));
-            closeButton.Width.Set(18, 0f);
-            closeButton.Height.Set(18, 0f);
-            closeButton.Left.Set(410, 0f);
-            closeButton.Top.Set(8, 0f);
+            closeButton = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/SearchCancel"));
+            closeButton.Width.Set(64, 0f);
+            closeButton.Height.Set(64, 0f);
+            closeButton.Left.Set(400, 0f);
+            closeButton.Top.Set(1, 0f);
             closeButton.OnLeftClick += (evt, _) => CloseUI();
             panel.Append(closeButton);
 
@@ -96,19 +96,37 @@ namespace terraria_gldty.Common.UI.BlackHoleStoneUI
             rangeValue.TextColor = Color.Gold;
             panel.Append(rangeValue);
 
+            // sliderTrack = new SliderTrack();
+            // sliderTrack.Width.Set(270, 0f);
+            // sliderTrack.Height.Set(32, 0f);
+            // sliderTrack.Left.Set(10, 0f);
+            // sliderTrack.Top.Set(240, 0f);
+            // panel.Append(sliderTrack);
+
+            // sliderThumb = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay"));
+            // sliderThumb.Width.Set(16, 0f);
+            // sliderThumb.Height.Set(24, 0f);
+            // sliderThumb.Left.Set(10, 0f);
+            // sliderThumb.Top.Set(244, 0f);
+            // panel.Append(sliderThumb);
+
+            // 1. 初始化滑轨（加大判定面积，作为父容器）
             sliderTrack = new SliderTrack();
             sliderTrack.Width.Set(270, 0f);
-            sliderTrack.Height.Set(16, 0f);
+            sliderTrack.Height.Set(32, 0f); // 逻辑高度加大到 32，更容易被鼠标捕捉
             sliderTrack.Left.Set(10, 0f);
-            sliderTrack.Top.Set(248, 0f);
+            sliderTrack.Top.Set(240, 0f);   // 调整 Top 值，使其垂直居中对齐文本
             panel.Append(sliderTrack);
 
+            // 2. 初始化滑块（让它成为 sliderTrack 的子元素）
             sliderThumb = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonPlay"));
-            sliderThumb.Width.Set(16, 0f);
-            sliderThumb.Height.Set(24, 0f);
-            sliderThumb.Left.Set(10, 0f);
-            sliderThumb.Top.Set(244, 0f);
-            panel.Append(sliderThumb);
+            sliderThumb.Width.Set(40f, 0f);
+            sliderThumb.Height.Set(40f, 0f);
+            // 因为变成了子元素，这里的 Left 和 Top 是相对于 sliderTrack 的！
+            sliderThumb.Left.Set(0, 0f);     // 初始相对左边距为 0
+            sliderThumb.Top.Set(-4f, 0f);      // (滑轨高度32 - 滑块高度24) / 2 = 4，实现完美垂直居中
+            sliderTrack.Append(sliderThumb); // 注意：这里是挂载到 sliderTrack 上！
+
 
             var hintText = new UIText(Language.GetTextValue("Mods.terraria_gldty.BlackHoleStone.Hint"), 0.8f);
             hintText.Left.Set(10, 0f);
@@ -235,7 +253,7 @@ namespace terraria_gldty.Common.UI.BlackHoleStoneUI
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, rect, Checked ? Color.LightSkyBlue : Color.Gray * 0.4f);
             spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 2), new Color(30, 30, 50));
             if (Checked) {
-                Utils.DrawBorderString(spriteBatch, "X", new Vector2(dims.X + 3, dims.Y - 1), Color.White, 0.7f);
+                Utils.DrawBorderString(spriteBatch, "√", new Vector2(dims.X + 3, dims.Y - 1), Color.White, 0.7f);
             }
         }
     }

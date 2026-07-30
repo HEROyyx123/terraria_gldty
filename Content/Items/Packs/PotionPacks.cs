@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
@@ -37,15 +38,15 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
-        public override void RightClick(Player player) {
-            player.QuickSpawnItem(player.GetSource_OpenItem(Type), PotionType, PotionCount);
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(PotionType, 1, PotionCount, PotionCount));
         }
 
         public override void AddRecipes() {
             CreateRecipe()
-                .AddIngredient(PotionType)                          // 1 瓶对应药水
-                .AddTile(TileID.Bottles)                            // 放置瓶子的工作台
-                .AddCondition(Condition.DownedSkeletron)             // 击败骷髅王后解锁
+                .AddIngredient(PotionType)
+                .AddTile(TileID.Bottles)
+                .AddCondition(Condition.DownedSkeletron)
                 .Register();
         }
     }

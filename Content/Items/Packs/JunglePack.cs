@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,9 +10,6 @@ namespace terraria_gldty.Content.Items.Packs
     /// </summary>
     public class JunglePack : ModItem
     {
-        // // TODO: 替换为自定义占位 PNG 后删除此行
-        // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
-
         public override void SetDefaults() {
             Item.width = 32;
             Item.height = 32;
@@ -27,18 +25,18 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ItemID.TempleKey));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SolarTablet, 1, 10, 10));
+            itemLoot.Add(ItemDropRule.Common(ItemID.LihzahrdPowerCell, 1, 10, 10));
+            itemLoot.Add(ItemDropRule.Common(ItemID.LifeFruit, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.BrokenHeroSword));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Ectoplasm, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Autohammer));
+            itemLoot.Add(ItemDropRule.Common(ItemID.ChlorophyteBar, 1, 100, 100));
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            player.QuickSpawnItem(source, ItemID.TempleKey);
-            player.QuickSpawnItem(source, ItemID.SolarTablet, 10);
-            player.QuickSpawnItem(source, ItemID.LihzahrdPowerCell, 10);
-            player.QuickSpawnItem(source, ItemID.LifeFruit, 99);
-            player.QuickSpawnItem(source, ItemID.BrokenHeroSword);
-            player.QuickSpawnItem(source, ItemID.Ectoplasm, 99);
-            player.QuickSpawnItem(source, ItemID.Autohammer);
-            player.QuickSpawnItem(source, ItemID.ChlorophyteBar, 100);
-
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedJunglePack = true;
         }
 

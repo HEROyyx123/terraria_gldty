@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,9 +10,6 @@ namespace terraria_gldty.Content.Items.Packs
     /// </summary>
     public class BeetlePack : ModItem
     {
-        // // TODO: 替换为自定义占位 PNG 后删除此行
-        // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
-
         public override void SetDefaults() {
             Item.width = 32;
             Item.height = 32;
@@ -27,19 +25,18 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ItemID.BeetleHusk, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.TurtleShell, 1, 3, 3));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FrozenTurtleShell));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Picksaw));
+            itemLoot.Add(ItemDropRule.Common(ItemID.TruffleWorm, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.EmpressButterfly, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.GoldenFishingRod));
+            itemLoot.Add(ItemDropRule.Common(ItemID.GoldenBugNet));
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            player.QuickSpawnItem(source, ItemID.BeetleHusk, 99);
-            player.QuickSpawnItem(source, ItemID.TurtleShell, 3);
-            player.QuickSpawnItem(source, ItemID.FrozenTurtleShell);
-            player.QuickSpawnItem(source, ItemID.Picksaw);
-            player.QuickSpawnItem(source, ItemID.TruffleWorm, 99);
-            // 七彩草蛉
-            player.QuickSpawnItem(source, ItemID.EmpressButterfly, 99);
-            player.QuickSpawnItem(source, ItemID.GoldenFishingRod);
-            player.QuickSpawnItem(source, ItemID.GoldenBugNet);
-
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedBeetlePack = true;
         }
 

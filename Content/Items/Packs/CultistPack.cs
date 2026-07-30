@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,9 +10,6 @@ namespace terraria_gldty.Content.Items.Packs
     /// </summary>
     public class CultistPack : ModItem
     {
-        // // TODO: 替换为自定义占位 PNG 后删除此行
-        // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
-
         public override void SetDefaults() {
             Item.width = 32;
             Item.height = 32;
@@ -27,13 +25,13 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ItemID.LunarCraftingStation));
+            itemLoot.Add(ItemDropRule.Common(ItemID.LunarHook));
+            itemLoot.Add(ItemDropRule.Common(ItemID.BottomlessShimmerBucket));
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            player.QuickSpawnItem(source, ItemID.LunarCraftingStation);
-            player.QuickSpawnItem(source, ItemID.LunarHook);
-            player.QuickSpawnItem(source, ItemID.BottomlessShimmerBucket);
-
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedCultistPack = true;
         }
 

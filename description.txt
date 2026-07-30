@@ -4,6 +4,8 @@
 新增物品：1.黑洞石：自由调节拾取范围和过滤物品，只捡你想捡的物品
 2.附魔作坊：在附魔作坊即可附魔词条，无需奸商哥布林工匠
 
+模组QQ交流群496663358
+
 【原版礼包列表】
 
 ▶ 新手礼包
@@ -82,3 +84,5 @@
 
 
 模组已开源：https://github.com/HEROyyx123/terraria_gldty
+[quote=tModLoader terraria_gldty]
+Developed By xuebao[/quote]

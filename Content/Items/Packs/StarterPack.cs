@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,48 +25,40 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GuideBook>()));
+
+            itemLoot.Add(ItemDropRule.Common(ItemID.PlatinumBar, 1, 100, 100));
+
+            itemLoot.Add(ItemDropRule.Common(ItemID.Diamond, 1, 20, 20));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Ruby, 1, 20, 20));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Emerald, 1, 20, 20));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Sapphire, 1, 20, 20));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Topaz, 1, 20, 20));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Amethyst, 1, 20, 20));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Amber, 1, 20, 20));
+
+            itemLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.PlatinumCoin));
+            itemLoot.Add(ItemDropRule.Common(ItemID.PiggyBank));
+
+            itemLoot.Add(ItemDropRule.Common(ItemID.Wood, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.DirtBlock, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.StoneBlock, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SnowBlock, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.MudBlock, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.SandBlock, 1, 999, 999));
+
+            itemLoot.Add(ItemDropRule.Common(ItemID.Torch, 1, 999, 999));
+
+            itemLoot.Add(ItemDropRule.Common(ItemID.LuckyHorseshoe));
+            itemLoot.Add(ItemDropRule.Common(ItemID.CloudinaBottle));
+            itemLoot.Add(ItemDropRule.Common(ItemID.GrapplingHook));
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            // 计划书
-            player.QuickSpawnItem(source, ModContent.ItemType<GuideBook>());
-
-            // 100 个铂金锭
-            player.QuickSpawnItem(source, ItemID.PlatinumBar, 100);
-
-            // 20 个各种宝石
-            player.QuickSpawnItem(source, ItemID.Diamond, 20);
-            player.QuickSpawnItem(source, ItemID.Ruby, 20);
-            player.QuickSpawnItem(source, ItemID.Emerald, 20);
-            player.QuickSpawnItem(source, ItemID.Sapphire, 20);
-            player.QuickSpawnItem(source, ItemID.Topaz, 20);
-            player.QuickSpawnItem(source, ItemID.Amethyst, 20);
-            player.QuickSpawnItem(source, ItemID.Amber, 20);
-
-            // 999 个凝胶
-            player.QuickSpawnItem(source, ItemID.Gel, 999);
-
-            // 一个铂金币
-            player.QuickSpawnItem(source, ItemID.PlatinumCoin);
-
-            // 一个存钱罐
-            player.QuickSpawnItem(source, ItemID.PiggyBank);
-
-            // 方块资源各 999
-            player.QuickSpawnItem(source, ItemID.Wood, 999);
-            player.QuickSpawnItem(source, ItemID.DirtBlock, 999);
-            player.QuickSpawnItem(source, ItemID.StoneBlock, 999);
-            player.QuickSpawnItem(source, ItemID.SnowBlock, 999);
-            player.QuickSpawnItem(source, ItemID.MudBlock, 999);
-            player.QuickSpawnItem(source, ItemID.SandBlock, 999);
-
-            // 999 个火把
-            player.QuickSpawnItem(source, ItemID.Torch, 999);
-
-            // 饰品
-            player.QuickSpawnItem(source, ItemID.LuckyHorseshoe);     // 马蹄铁
-            player.QuickSpawnItem(source, ItemID.CloudinaBottle);       // 云朵瓶
-            player.QuickSpawnItem(source, ItemID.GrapplingHook);        // 抓钩
+            // 仅做标记，物品由 ModifyItemLoot 自动生成
+            player.GetModPlayer<Common.Players.PackPlayer>().ReceivedStarterPack = true;
         }
     }
 }

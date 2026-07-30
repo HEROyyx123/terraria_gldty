@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
+using terraria_gldty.Common.UI.Globals; // 引用上面的 GlobalItem 命名空间
 
 namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
 {
@@ -22,12 +23,17 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
         private UIScrollbar scrollbar;
         private UIText statusText;
 
-       private int storedItemType;
-       private int storedItemStack;
+        // --- 新增：伤害类型修改相关控件 ---
+        private UIText damageTypeTitle;
+        private UIText currentDamageTypeText;
+        private UITextPanel<string> changeDamageTypeBtn;
+        private UITextPanel<string> resetDamageTypeBtn; // 新增：重置按钮
+        private int selectedDamageTypeIndex = -1;
+
+        private int storedItemType;
+        private int storedItemStack;
         private int storedItemPrefix;
-        // private bool _dragging;
-        // private Vector2 _dragOffset;
-   
+
         private bool _dragging;
         private Vector2 _dragOffset;
 
@@ -35,9 +41,9 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             panel = new UIPanel();
             panel.SetPadding(12);
             panel.Width.Set(480, 0f);
-            panel.Height.Set(500, 0f);
+            panel.Height.Set(560, 0f); // 稍微调高面板以容纳新功能
             panel.Left.Set(Main.screenWidth / 2 - 240, 0f);
-            panel.Top.Set(Main.screenHeight / 2 - 250, 0f);
+            panel.Top.Set(Main.screenHeight / 2 - 280, 0f);
             panel.BackgroundColor = new Color(30, 30, 50, 230);
             panel.BorderColor = new Color(100, 80, 180, 255);
             Append(panel);
@@ -48,13 +54,13 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             titleText.TextColor = Color.LightSkyBlue;
             panel.Append(titleText);
 
-            closeButton = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/ButtonDelete"));
-            closeButton.Width.Set(18, 0f);
-            closeButton.Height.Set(18, 0f);
-            closeButton.Left.Set(450, 0f);
-            closeButton.Top.Set(8, 0f);
+            closeButton = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/SearchCancel"));
+            closeButton.Width.Set(64, 0f);
+            closeButton.Height.Set(64, 0f);
+            closeButton.Left.Set(430, 0f);
+            closeButton.Top.Set(1, 0f);
             closeButton.OnLeftClick += (evt, _) => CloseUI();
-           panel.Append(closeButton);
+            panel.Append(closeButton);
 
             var instructionText = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.Instruction"), 0.85f);
             instructionText.Left.Set(10, 0f);
@@ -69,45 +75,118 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
 
             statusText = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.PlaceItem"), 0.9f);
             statusText.Left.Set(70, 0f);
-            statusText.Top.Set(75, 0f);
+            statusText.Top.Set(68, 0f);
             statusText.TextColor = Color.Gold;
             panel.Append(statusText);
 
-           scrollbar = new UIScrollbar();
-           scrollbar.Height.Set(340, 0f);
+            // ================= 新增：伤害类型转换区域 =================
+            currentDamageTypeText = new UIText("伤害类型: 原版默认", 0.85f);
+            currentDamageTypeText.Left.Set(70, 0f);
+            currentDamageTypeText.Top.Set(92, 0f);
+            currentDamageTypeText.TextColor = Color.LightGreen;
+            panel.Append(currentDamageTypeText);
+
+            // 切换按钮
+            changeDamageTypeBtn = new UITextPanel<string>("切换类型");
+            changeDamageTypeBtn.Left.Set(260, 0f);
+            changeDamageTypeBtn.Top.Set(65, 0f);
+            changeDamageTypeBtn.Width.Set(90, 0f);
+            changeDamageTypeBtn.Height.Set(35, 0f);
+            changeDamageTypeBtn.OnLeftClick += OnChangeDamageTypeClick;
+            panel.Append(changeDamageTypeBtn);
+
+            // 复原/重置按钮
+            resetDamageTypeBtn = new UITextPanel<string>("恢复默认");
+            resetDamageTypeBtn.Left.Set(360, 0f);
+            resetDamageTypeBtn.Top.Set(65, 0f);
+            resetDamageTypeBtn.Width.Set(90, 0f);
+            resetDamageTypeBtn.Height.Set(35, 0f);
+            resetDamageTypeBtn.OnLeftClick += OnResetDamageTypeClick;
+            panel.Append(resetDamageTypeBtn);
+            // ==========================================================
+
+            scrollbar = new UIScrollbar();
+            scrollbar.Height.Set(380, 0f);
             scrollbar.Left.Set(455, 0f);
-            scrollbar.Top.Set(110, 0f);
+            scrollbar.Top.Set(150, 0f);
             panel.Append(scrollbar);
 
             prefixList = new UIList();
-            prefixList.Height.Set(340, 0f);
+            prefixList.Height.Set(380, 0f);
             prefixList.Width.Set(430, 0f);
             prefixList.Left.Set(10, 0f);
-            prefixList.Top.Set(110, 0f);
+            prefixList.Top.Set(150, 0f);
             prefixList.SetScrollbar(scrollbar);
             panel.Append(prefixList);
         }
 
-        public void OpenUI() {
-           slot.StoredType = storedItemType;
-           slot.StoredStack = storedItemStack;
-            slot.StoredPrefix = storedItemPrefix;
-            UpdatePrefixList();
-            panel.Left.Set(Main.screenWidth / 2 - 240, 0f);
-            panel.Top.Set(Main.screenHeight / 2 - 250, 0f);
+        // 按钮点击事件：切换伤害类型
+        private void OnChangeDamageTypeClick(UIMouseEvent evt, UIElement listeningElement) {
+            if (storedItemType <= 0) return;
+
+            selectedDamageTypeIndex++;
+            if (selectedDamageTypeIndex >= CustomDamageTypeItem.DamageClasses.Count) {
+                selectedDamageTypeIndex = 0; // 循环切换
+            }
+
+            SoundEngine.PlaySound(SoundID.MenuTick);
+            UpdateDamageTypeDisplay();
         }
 
-       private void CloseUI() {
+        // 新增：重置为默认原版伤害类型
+        private void OnResetDamageTypeClick(UIMouseEvent evt, UIElement listeningElement) {
+            if (storedItemType <= 0) return;
+
+            selectedDamageTypeIndex = -1; // -1 代表还原原版类型
+            SoundEngine.PlaySound(SoundID.MenuTick);
+            UpdateDamageTypeDisplay();
+        }
+
+        private void UpdateDamageTypeDisplay() {
+            if (storedItemType <= 0) {
+                currentDamageTypeText.SetText("伤害类型: 未放入物品");
+                return;
+            }
+
+            if (selectedDamageTypeIndex == -1) {
+                currentDamageTypeText.SetText("伤害类型: 保持原版");
+            } else {
+                string name = CustomDamageTypeItem.DamageClassNames[selectedDamageTypeIndex];
+                currentDamageTypeText.SetText("目标类型: " + name);
+            }
+        }
+
+        public void OpenUI() {
+            slot.StoredType = storedItemType;
+            slot.StoredStack = storedItemStack;
+            slot.StoredPrefix = storedItemPrefix;
+            selectedDamageTypeIndex = slot.StoredDamageTypeIndex; // 恢复选择
+            UpdatePrefixList();
+            UpdateDamageTypeDisplay();
+            panel.Left.Set(Main.screenWidth / 2 - 240, 0f);
+            panel.Top.Set(Main.screenHeight / 2 - 280, 0f);
+        }
+
+        private void CloseUI() {
             if (Main.LocalPlayer != null && storedItemType > 0 && !Main.LocalPlayer.dead) {
-               Item item = new Item();
-               item.SetDefaults(storedItemType);
-               item.stack = storedItemStack;
+                Item item = new Item();
+                item.SetDefaults(storedItemType);
+                item.stack = storedItemStack;
                 item.Prefix(storedItemPrefix);
+
+                // 还原修改后的伤害类型
+                if (selectedDamageTypeIndex >= 0) {
+                    var globalItem = item.GetGlobalItem<CustomDamageTypeItem>();
+                    globalItem.OverrideDamageTypeIndex = selectedDamageTypeIndex;
+                    item.DamageType = CustomDamageTypeItem.DamageClasses[selectedDamageTypeIndex];
+                }
+
                 Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_DropAsItem(), item);
             }
-           storedItemType = 0;
-           storedItemStack = 0;
+            storedItemType = 0;
+            storedItemStack = 0;
             storedItemPrefix = 0;
+            selectedDamageTypeIndex = -1;
             SoundEngine.PlaySound(SoundID.MenuClose);
             ModContent.GetInstance<EnchantingWorkshopUISystem>().HideUI();
         }
@@ -120,8 +199,6 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
                 return;
             }
 
-            //*************************************
-            
             if (panel.ContainsPoint(Main.MouseScreen)) {
                 Main.LocalPlayer.mouseInterface = true;
             }
@@ -143,14 +220,14 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
                     panel.Recalculate();
                 }
             }
-            //*************************************
-
 
             if (slot.StoredType != storedItemType) {
-               storedItemType = slot.StoredType;
-               storedItemStack = slot.StoredStack;
+                storedItemType = slot.StoredType;
+                storedItemStack = slot.StoredStack;
                 storedItemPrefix = slot.StoredPrefix;
+                selectedDamageTypeIndex = slot.StoredDamageTypeIndex;
                 UpdatePrefixList();
+                UpdateDamageTypeDisplay();
             }
 
             if (storedItemType > 0) {
@@ -171,8 +248,7 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             Item baseItem = ContentSamples.ItemsByType[storedItemType];
             if (baseItem == null || baseItem.IsAir) return;
 
-
-           List<int> applicablePrefixes = new List<int>();
+            List<int> applicablePrefixes = new List<int>();
             for (int p = 1; p < PrefixLoader.PrefixCount; p++) {
                 Item testItem = baseItem.Clone();
                 testItem.Prefix(p);
@@ -210,11 +286,23 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             newItem.SetDefaults(storedItemType);
             newItem.Prefix(prefixId);
 
+            // 应用选中的伤害类型信息到新生成的物品上
+            if (selectedDamageTypeIndex >= 0 && selectedDamageTypeIndex < CustomDamageTypeItem.DamageClasses.Count) {
+                var customData = newItem.GetGlobalItem<CustomDamageTypeItem>();
+                customData.OverrideDamageTypeIndex = selectedDamageTypeIndex;
+                newItem.DamageType = CustomDamageTypeItem.DamageClasses[selectedDamageTypeIndex];
+                 //以下测试代码***********************************************
+                customData.ApplyDamageType(newItem); // 手动应用一次
+                //**********************************************************
+            }
+
             storedItemType = 0;
-           storedItemStack = 0;
-           slot.StoredType = 0;
-           slot.StoredStack = 0;
-           slot.StoredPrefix = 0;
+            storedItemStack = 0;
+            selectedDamageTypeIndex = -1;
+            slot.StoredType = 0;
+            slot.StoredStack = 0;
+            slot.StoredPrefix = 0;
+            slot.StoredDamageTypeIndex = -1;
 
             bool placed = false;
             for (int i = 0; i < 50; i++) {
@@ -228,40 +316,18 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
                 player.QuickSpawnItem(player.GetSource_DropAsItem(), newItem);
             }
 
-           SoundEngine.PlaySound(SoundID.Item37);
+            SoundEngine.PlaySound(SoundID.Item37);
             Main.NewText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.Crafted"), Color.LightSkyBlue);
             UpdatePrefixList();
+            UpdateDamageTypeDisplay();
         }
 
         private bool TryRemoveCoins(Player player, long amount) {
             if (amount <= 0) return true;
-            long totalCoins = 0;
-            for (int i = 0; i < 58; i++) {
-                Item item = player.inventory[i];
-                if (item.type >= ItemID.CopperCoin && item.type <= ItemID.PlatinumCoin) {
-                    totalCoins += (long)item.stack * item.value;
-                }
+            if (!player.CanAfford(amount)) {
+                return false;
             }
-            if (totalCoins < amount) return false;
-
-            long remaining = amount;
-            int[] coinTypes = { ItemID.PlatinumCoin, ItemID.GoldCoin, ItemID.SilverCoin, ItemID.CopperCoin };
-            long[] coinValues = { 1000000, 10000, 100, 1 };
-
-            for (int t = 0; t < 4 && remaining > 0; t++) {
-                for (int i = 0; i < 58 && remaining > 0; i++) {
-                    Item item = player.inventory[i];
-                    if (item.type == coinTypes[t]) {
-                        long toRemove = Math.Min(item.stack, remaining / coinValues[t]);
-                        if (toRemove > 0) {
-                            item.stack -= (int)toRemove;
-                            remaining -= toRemove * coinValues[t];
-                            if (item.stack <= 0) item.TurnToAir();
-                        }
-                    }
-                }
-            }
-            return true;
+            return player.BuyItem(amount);
         }
 
         internal static string FormatCoins(long value) {
@@ -283,9 +349,10 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
 
     internal class ItemSlot : UIElement
     {
-       public int StoredType;
-       public int StoredStack = 1;
+        public int StoredType;
+        public int StoredStack = 1;
         public int StoredPrefix;
+        public int StoredDamageTypeIndex = -1; // 记录放到槽里的物品原有的伤害类型修改
 
         public ItemSlot() {
             Width.Set(52, 0f);
@@ -298,13 +365,20 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
 
             if (StoredType > 0 && cursorItem.IsAir) {
                 Item item = new Item();
-               item.SetDefaults(StoredType);
-               item.stack = StoredStack;
+                item.SetDefaults(StoredType);
+                item.stack = StoredStack;
                 item.Prefix(StoredPrefix);
+                
+                if (StoredDamageTypeIndex >= 0) {
+                    item.GetGlobalItem<CustomDamageTypeItem>().OverrideDamageTypeIndex = StoredDamageTypeIndex;
+                    item.DamageType = CustomDamageTypeItem.DamageClasses[StoredDamageTypeIndex];
+                }
+
                 Main.mouseItem = item;
-               StoredType = 0;
-               StoredStack = 0;
+                StoredType = 0;
+                StoredStack = 0;
                 StoredPrefix = 0;
+                StoredDamageTypeIndex = -1;
                 SoundEngine.PlaySound(SoundID.Grab);
             }
             else if (StoredType <= 0 && !cursorItem.IsAir) {
@@ -312,6 +386,8 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
                     StoredType = cursorItem.type;
                     StoredStack = cursorItem.stack;
                     StoredPrefix = cursorItem.prefix;
+                    StoredDamageTypeIndex = cursorItem.GetGlobalItem<CustomDamageTypeItem>().OverrideDamageTypeIndex;
+                    
                     Main.mouseItem = new Item();
                     SoundEngine.PlaySound(SoundID.Grab);
                 }
@@ -334,6 +410,19 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
                         spriteBatch.Draw(itemTex, dims.Center(), null, Color.White, 0f, itemTex.Size() * 0.5f, scale, SpriteEffects.None, 0f);
                     }
                 }
+
+                if (ContainsPoint(Main.MouseScreen)) {
+                    Item hoverItem = new Item();
+                    hoverItem.SetDefaults(StoredType);
+                    hoverItem.stack = StoredStack;
+                    hoverItem.Prefix(StoredPrefix);
+                    if (StoredDamageTypeIndex >= 0) {
+                        hoverItem.GetGlobalItem<CustomDamageTypeItem>().OverrideDamageTypeIndex = StoredDamageTypeIndex;
+                        hoverItem.DamageType = CustomDamageTypeItem.DamageClasses[StoredDamageTypeIndex];
+                    }
+                    Main.HoverItem = hoverItem;
+                    Main.hoverItemName = hoverItem.Name;
+                }
             }
         }
     }
@@ -342,10 +431,15 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
     {
         private readonly int _itemType;
         private readonly int _prefixId;
+        private readonly Item _previewItem;
 
         public PrefixEntry(int itemType, int prefixId) {
             _itemType = itemType;
             _prefixId = prefixId;
+
+            _previewItem = new Item();
+            _previewItem.SetDefaults(_itemType);
+            _previewItem.Prefix(_prefixId);
 
             Width.Set(410, 0f);
             Height.Set(36, 0f);
@@ -364,6 +458,15 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             base.DrawSelf(spriteBatch);
             CalculatedStyle dims = GetDimensions();
 
+            if (IsMouseHovering && Main.mouseItem.IsAir) {
+                BackgroundColor = new Color(70, 70, 100, 230);
+                Main.HoverItem = _previewItem.Clone();
+                Main.hoverItemName = _previewItem.Name;
+            }
+            else {
+                BackgroundColor = new Color(40, 40, 60, 200);
+            }
+
             string prefixName = Lang.prefix[_prefixId].Value;
             Utils.DrawBorderString(spriteBatch, prefixName, new Vector2(dims.X + 8, dims.Y + 8), Color.White, 0.8f);
 
@@ -374,3 +477,5 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
         }
     }
 }
+
+

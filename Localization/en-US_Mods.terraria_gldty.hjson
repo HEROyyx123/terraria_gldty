@@ -299,12 +299,17 @@ Items: {
 
 	BlackHoleStone: {
 		DisplayName: Black Hole Stone
-		Tooltip: ""
+		Tooltip: "Takes effect while in the inventory, Increases item pickup range and filters item pickups, Right-click to open settings"
 	}
 
 	EnchantingWorkshop: {
 		DisplayName: Enchanting Workshop
-		Tooltip: ""
+		Tooltip: "Functions as a Tinkerer's Workshop, Allows direct crafting of weapons or accessories with specified modifiers, Right-click after placing to open the enchanting interface"
+	}
+
+	CMoonPotion: {
+		Tooltip: Allows you to be affected by horizontal gravity and fall sideways
+		DisplayName: C Moon Potion
 	}
 }
 
@@ -356,3 +361,21 @@ Conditions: {
 }
 
 Tiles.EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile
+
+Buffs: {
+	CMoonBuff: {
+		Description: Allows you to be affected by horizontal gravity and fall sideways
+		DisplayName: C-Moon Repulsion Effect
+	}
+}
+
+Configs: {
+	CMoonConfig: {
+		DisplayName: C-Moon Potion Settings
+
+		DisableVerticalVelocity: {
+			Label: Lock Vertical Displacement (Zero Y-axis Velocity)
+			Tooltip: When enabled, forces vertical speed (Y-axis) to zero while under the effect of C-Moon Potion, allowing complete horizontal fall. When disabled, retains original vertical inertia and movement.
+		}
+	}
+}

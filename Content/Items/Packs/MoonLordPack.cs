@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,9 +10,6 @@ namespace terraria_gldty.Content.Items.Packs
     /// </summary>
     public class MoonLordPack : ModItem
     {
-        // // TODO: 替换为自定义占位 PNG 后删除此行
-        // public override string Texture => "Terraria/Images/Item_" + ItemID.Chest;
-
         public override void SetDefaults() {
             Item.width = 32;
             Item.height = 32;
@@ -27,18 +25,20 @@ namespace terraria_gldty.Content.Items.Packs
 
         public override bool CanRightClick() => true;
 
+        public override void ModifyItemLoot(ItemLoot itemLoot) {
+            itemLoot.Add(ItemDropRule.Common(ItemID.LunarBar, 1, 100, 100));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentSolar, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentVortex, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentNebula, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FragmentStardust, 1, 99, 99));
+            itemLoot.Add(ItemDropRule.Common(ItemID.RodofDiscord));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarterPack>()));
+
+            // 联动模组增强（如有灾厄，追加灾厄材料）
+            Common.ModIntegration.ModIntegrationSystem.ModifyAllExistingPacks("moonlord", itemLoot);
+        }
+
         public override void RightClick(Player player) {
-            var source = player.GetSource_OpenItem(Type);
-
-            player.QuickSpawnItem(source, ItemID.LunarBar, 100);
-            player.QuickSpawnItem(source, ItemID.FragmentSolar, 99);
-            player.QuickSpawnItem(source, ItemID.FragmentVortex, 99);
-            player.QuickSpawnItem(source, ItemID.FragmentNebula, 99);
-            player.QuickSpawnItem(source, ItemID.FragmentStardust, 99);
-            player.QuickSpawnItem(source, ItemID.RodofDiscord);
-            // 送一个新手礼包物品（不是内容，玩家自己右键打开）
-            player.QuickSpawnItem(source, ModContent.ItemType<StarterPack>());
-
             player.GetModPlayer<Common.Players.PackPlayer>().ReceivedMoonLordPack = true;
         }
 

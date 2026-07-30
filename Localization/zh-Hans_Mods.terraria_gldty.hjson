@@ -306,6 +306,11 @@ Items: {
 		DisplayName: 附魔作坊
 		Tooltip: 兼具工匠作坊功能，可直接合成指定词条的武器或饰品，放置后右键打开附魔界面
 	}
+
+	CMoonPotion: {
+		Tooltip: 使你受水平重力影响并横向坠落，重力...改变了！
+		DisplayName: 新月药剂
+	}
 }
 
 BlackHoleStone: {
@@ -356,3 +361,21 @@ Conditions: {
 }
 
 // Tiles.EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile
+
+Buffs: {
+	CMoonBuff: {
+		Description: 使你受水平重力影响并横向坠落
+		DisplayName: 新月排斥反应
+	}
+}
+
+Configs: {
+	CMoonConfig: {
+		DisplayName: 新月药剂设置
+
+		DisableVerticalVelocity: {
+			Label: 锁定垂直位移 (Y轴位移清零)
+			Tooltip: 开启后，新月药水作用期间将强制清空垂直速度(Y轴)，使玩家完全处于水平平面坠落。关闭则保留玩家原本的垂直惯性与位移。
+		}
+	}
+}
