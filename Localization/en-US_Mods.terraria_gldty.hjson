@@ -299,17 +299,28 @@ Items: {
 
 	BlackHoleStone: {
 		DisplayName: Black Hole Stone
-		Tooltip: "Takes effect while in the inventory, Increases item pickup range and filters item pickups, Right-click to open settings"
+		Tooltip: Takes effect while in the inventory, Increases item pickup range and filters item pickups, Right-click to open settings
 	}
 
 	EnchantingWorkshop: {
 		DisplayName: Enchanting Workshop
-		Tooltip: "Functions as a Tinkerer's Workshop, Allows direct crafting of weapons or accessories with specified modifiers, Right-click after placing to open the enchanting interface"
+		Tooltip: Functions as a Tinkerer's Workshop, Allows direct crafting of weapons or accessories with specified modifiers, Right-click after placing to open the enchanting interface
 	}
 
 	CMoonPotion: {
 		Tooltip: Allows you to be affected by horizontal gravity and fall sideways
 		DisplayName: C Moon Potion
+	}
+
+	TinyKingPotion: {
+		Tooltip:
+			'''
+			Grants the authority of "Little King"
+			When taking fatal damage, transfers the damage to a random female NPC to negate death
+			The potion's effect wears off immediately upon activation
+			"My heart beats alongside theirs."
+			'''
+		DisplayName: Little King Potion
 	}
 }
 
@@ -366,6 +377,11 @@ Buffs: {
 	CMoonBuff: {
 		Description: Allows you to be affected by horizontal gravity and fall sideways
 		DisplayName: C-Moon Repulsion Effect
+	}
+
+	TinyKingBuff: {
+		Description: Your fate is bound to the town's female NPCs
+		DisplayName: Little King
 	}
 }
 

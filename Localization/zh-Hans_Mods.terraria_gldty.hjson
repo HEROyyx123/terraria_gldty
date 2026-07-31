@@ -311,6 +311,17 @@ Items: {
 		Tooltip: 使你受水平重力影响并横向坠落，重力...改变了！
 		DisplayName: 新月药剂
 	}
+
+	TinyKingPotion: {
+		Tooltip:
+			'''
+			获得“小小的王”权能
+			受到致死伤害时，会将伤害转移给随机一名女性NPC并抵消死亡
+			发动后药水效果立刻消失
+			“我的心脏，正与她们同在。”
+			'''
+		DisplayName: 小小的王药剂
+	}
 }
 
 BlackHoleStone: {
@@ -366,6 +377,11 @@ Buffs: {
 	CMoonBuff: {
 		Description: 使你受水平重力影响并横向坠落
 		DisplayName: 新月排斥反应
+	}
+
+	TinyKingBuff: {
+		Description: 你的命运已与镇上的女性NPC相连
+		DisplayName: 小小的王
 	}
 }
 
