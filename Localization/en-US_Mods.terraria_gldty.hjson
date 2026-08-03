@@ -322,6 +322,28 @@ Items: {
 			'''
 		DisplayName: Little King Potion
 	}
+
+	SpaceMovePotion: {
+		DisplayName: Teleportation Potion: Space Move
+		Tooltip:
+			'''
+			"Calculating 11-dimensional spatial coordinates..."
+			Grants 'Space Movement'
+			Allows instant teleportation to any location by right-clicking on the fullscreen map
+			'Kuroko's ability isn't meant for peeping!'
+			'''
+	}
+
+	BambooCicada: {
+		Tooltip:
+			'''
+			Empty stomach, loud voice, and choked by string
+			That's right, it's the Bamboo Cicada
+			Grants 'Fishy Resonance' while held
+			"Ah this this ah ah we this this ah ah ah this we this this ah"
+			'''
+		DisplayName: Bamboo Cicada
+	}
 }
 
 BlackHoleStone: {
@@ -383,6 +405,21 @@ Buffs: {
 		Description: Your fate is bound to the town's female NPCs
 		DisplayName: Little King
 	}
+
+	SpaceMoveBuff: {
+		Description: Space Movement
+		DisplayName: Open the fullscreen map and right-click to instantly teleport to the selected location
+	}
+
+	SprainedAnkleDebuff: {
+		Description: Severe ankle pain! Movement speed plummets and dashing is disabled.
+		DisplayName: Sprained Ankle
+	}
+
+	FishyResonanceBuff: {
+		Description: Hypnotic fish sounds brainwash you, boosting movement and attack speed—but watch your step!
+		DisplayName: Fishy Resonance
+	}
 }
 
 Configs: {
@@ -395,3 +432,5 @@ Configs: {
 		}
 	}
 }
+
+Projectiles.BambooCicadaProjectile.DisplayName: Bamboo Cicada Projectile

@@ -322,6 +322,28 @@ Items: {
 			'''
 		DisplayName: 小小的王药剂
 	}
+
+	SpaceMovePotion: {
+		DisplayName: 空间移动药剂
+		Tooltip:
+			'''
+			“计算 11 维空间坐标……”
+			赋予【空间移动】效果
+			效果持续期间，打开全屏地图右键任意位置即可瞬间传送
+			‘白井黑子我的能力可不是用来偷窥的！’
+			'''
+	}
+
+	BambooCicada: {
+		Tooltip:
+			'''
+			肚子空，声音大，还被线卡脖子
+			没错是竹知了
+			手持时获得【鱼音缭绕】效果
+			"啊这个这个啊啊我们这个这个啊啊啊这个我们这个这个啊"
+			'''
+		DisplayName: 竹知了
+	}
 }
 
 BlackHoleStone: {
@@ -383,6 +405,21 @@ Buffs: {
 		Description: 你的命运已与镇上的女性NPC相连
 		DisplayName: 小小的王
 	}
+
+	SpaceMoveBuff: {
+		Description: 打开全屏地图右键即可瞬间移动至目标地点
+		DisplayName: 空间移动
+	}
+
+	SprainedAnkleDebuff: {
+		Description: 脚踝剧痛！移动速度暴跌，无法使用冲刺。
+		DisplayName: 崴脚
+	}
+
+	FishyResonanceBuff: {
+		Description: 魔性的鱼音洗脑了你，提升移动与攻击速度，但小心看路！
+		DisplayName: 鱼音缭绕
+	}
 }
 
 Configs: {
@@ -395,3 +432,5 @@ Configs: {
 		}
 	}
 }
+
+// Projectiles.BambooCicadaProjectile.DisplayName: Bamboo Cicada Projectile

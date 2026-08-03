@@ -7,10 +7,7 @@ namespace terraria_gldty
     public class terraria_gldty : Mod
     {
         public override void Load() {
-            // ��ʼ���Զ���ϳ�����
             Common.Systems.PackRecipeConditions.Initialize();
-
-            // ��ʼ��ģ������ϵͳ����Ⲣ���� CalamityMod ������ģ�飩
             Common.ModIntegration.ModIntegrationSystem.RegisterIntegration(
                 new Common.ModIntegration.CalamityIntegration.CalamityIntegration()
             );
@@ -18,25 +15,6 @@ namespace terraria_gldty
 
 
 
-        /// <summary>
-        /// ������ Mod ���õĽӿڣ�ͨ�� ModLoader.GetMod("terraria_gldty").Call(...) ���ã�
-        ///
-        /// ֧�ֵķ�����
-        ///   Call("GetPackKeys")
-        ///       �� ����������� Key �б�����ԭ�� + ����ģ�飩
-        ///
-        ///   Call("GetPackClassName", "hardmode")
-        ///       �� ���� "HardmodePack"
-        ///
-        ///   Call("OverridePackContents", "hardmode", Action{ItemLoot} callback)
-        ///       �� ע�Ḳ�ǵ�����򣬴������ʹ�� callback ����Ĭ������
-        ///
-        ///   Call("IsModLoaded", "CalamityMod")
-        ///       �� ���ĳ������ģ���Ƿ��Ѽ���
-        ///
-        ///   Call("GetModIntegrationKeys")
-        ///       �� ������������ģ��ע��� PackKeys
-        /// </summary>
         public override object Call(params object[] args) {
             if (args == null || args.Length == 0)
                 return null;

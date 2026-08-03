@@ -4,6 +4,8 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using terraria_gldty.Content.Buff;
+using Terraria.Audio;
+using Microsoft.Xna.Framework;
 
 namespace terraria_gldty.Common.Players
 {
@@ -95,12 +97,20 @@ namespace terraria_gldty.Common.Players
                     // 5. 提示文本
                     CombatText.NewText(Player.getRect(), Microsoft.Xna.Framework.Color.Purple, "小小的王权能发动！", true);
                     CombatText.NewText(targetNpc.getRect(), Microsoft.Xna.Framework.Color.Purple, "你付出了一个代价！", true);
-
+                    // 6. 播放音效
+                    // =================【1. 播放音效强化】=================
+                    // 播放玩家侧音效
+                    SoundEngine.PlaySound(SoundID.Item103 with { Pitch = -0.2f, Volume = 0.9f }, Player.Center);
+                    
+                    // 播放 NPC 侧音效：雷击/重击/心碎声
+                    SoundEngine.PlaySound(SoundID.Item74 with { Pitch = 0.3f, Volume = 1f }, targetNpc.Center);
+                    //**************************************************************
                     return false; // 拦截死亡
                 }
             }
             //若无触发移除 Buff
             Player.ClearBuff(buffType);
+            SoundEngine.PlaySound(SoundID.NPCDeath59 with { Pitch = -0.2f, Volume = 0.9f }, Player.Center);
             CombatText.NewText(Player.getRect(), Microsoft.Xna.Framework.Color.Purple, "权能拒绝了你！", true);
             return true; // 无转移目标或无 Buff，正常死亡
         }
