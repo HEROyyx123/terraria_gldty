@@ -344,6 +344,11 @@ Items: {
 			'''
 		DisplayName: Bamboo Cicada
 	}
+
+	SoulChain: {
+		DisplayName: Soul Chain
+		Tooltip: ""
+	}
 }
 
 BlackHoleStone: {
@@ -434,3 +439,4 @@ Configs: {
 }
 
 Projectiles.BambooCicadaProjectile.DisplayName: Bamboo Cicada Projectile
+Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册
