@@ -30,15 +30,15 @@ namespace terraria_gldty.Content.Items.Packs
 
             itemLoot.Add(ItemDropRule.Common(ItemID.PlatinumBar, 1, 100, 100));
 
-            itemLoot.Add(ItemDropRule.Common(ItemID.Diamond, 1, 20, 20));
-            itemLoot.Add(ItemDropRule.Common(ItemID.Ruby, 1, 20, 20));
-            itemLoot.Add(ItemDropRule.Common(ItemID.Emerald, 1, 20, 20));
-            itemLoot.Add(ItemDropRule.Common(ItemID.Sapphire, 1, 20, 20));
-            itemLoot.Add(ItemDropRule.Common(ItemID.Topaz, 1, 20, 20));
-            itemLoot.Add(ItemDropRule.Common(ItemID.Amethyst, 1, 20, 20));
-            itemLoot.Add(ItemDropRule.Common(ItemID.Amber, 1, 20, 20));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Diamond, 1, 5, 5));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Ruby, 1, 5, 5));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Emerald, 1, 5, 5));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Sapphire, 1, 5, 5));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Topaz, 1, 5, 5));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Amethyst, 1, 5, 5));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Amber, 1, 5, 5));
 
-            itemLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 999, 999));
+            itemLoot.Add(ItemDropRule.Common(ItemID.Gel, 1, 99, 99));
             itemLoot.Add(ItemDropRule.Common(ItemID.PlatinumCoin));
             itemLoot.Add(ItemDropRule.Common(ItemID.PiggyBank));
 

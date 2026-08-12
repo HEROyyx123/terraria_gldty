@@ -349,6 +349,39 @@ Items: {
 		DisplayName: 灵魂手册
 		// Tooltip: ""
 	}
+
+	BridgeBuilderItem: {
+		Tooltip:
+			'''
+			[c/56B4E9:【建造工具】]
+			手持时显示建造预览轨
+			左键点击以根据设置自动铺设平台（物块）与放置光源
+			可以自定义长度、方向、形状与光源间隔
+			可以自定义清理周围的物块
+			右键点击可打开/关闭配置界面
+			'''
+		DisplayName: 平台建造器
+	}
+
+	MagicStoragePack: {
+		Tooltip: 天空之上的容器或许别有用途
+		DisplayName: 魔法存储礼包
+	}
+
+	FakeCopperShortsword: {
+		Tooltip: 看好了神圣锭是这么用的
+		DisplayName: 真神圣锭
+	}
+
+	AnglerCage: {
+		// Tooltip: ""
+		// DisplayName: AnglerCage
+	}
+
+	LuminiteStaff: {
+		Tooltip: 天界能量的真正形态
+		DisplayName: 真夜明锭
+	}
 }
 
 BlackHoleStone: {
@@ -425,6 +458,11 @@ Buffs: {
 		Description: 魔性的鱼音洗脑了你，提升移动与攻击速度，但小心看路！
 		DisplayName: 鱼音缭绕
 	}
+
+	LuminiteMinionBuff: {
+		DisplayName: 真夜明锭守护着你
+		Description: 真夜明锭守护着你
+	}
 }
 
 Configs: {
@@ -438,5 +476,11 @@ Configs: {
 	}
 }
 
-// Projectiles.BambooCicadaProjectile.DisplayName: Bamboo Cicada Projectile
+Projectiles: {
+	BambooCicadaProjectile.DisplayName: 竹知了
+	FakeCopperShortswordProj.DisplayName: 真神圣锭
+	LuminiteStaffProj.DisplayName: 真夜明锭
+	LuminiteMinionProj.DisplayName: 真夜明锭
+}
+
 // Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册

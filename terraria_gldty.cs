@@ -11,6 +11,8 @@ namespace terraria_gldty
             Common.ModIntegration.ModIntegrationSystem.RegisterIntegration(
                 new Common.ModIntegration.CalamityIntegration.CalamityIntegration()
             );
+            // 例如在 ModSystem.PostSetupContent 或专门的 RegisterAll 中添加：
+            Common.ModIntegration.ModIntegrationSystem.RegisterIntegration(new Common.ModIntegration.MagicStorageIntegration());
         }
 
 

@@ -349,6 +349,39 @@ Items: {
 		DisplayName: Soul Chain
 		Tooltip: ""
 	}
+
+	BridgeBuilderItem: {
+		Tooltip:
+			'''
+			[c/56B4E9:[Building Tool]]
+			Shows a builder guide preview when held
+			Left click to construct platforms and light sources automatically based on settings
+			Supports custom length, direction, hammering shapes, and lighting intervals
+			Supports clearing upper and lower tiles up to 10 blocks
+			Right click to toggle the configuration UI
+			'''
+		DisplayName: Bridge & Platform Builder
+	}
+
+	MagicStoragePack: {
+		Tooltip: Containers above the sky may serve a different purpose.
+		DisplayName: Magic Storage Pack
+	}
+
+	FakeCopperShortsword: {
+		Tooltip: Watch and learn, THIS is how you use Hallowed Bars.
+		DisplayName: True Hallowed Bar
+	}
+
+	AnglerCage: {
+		Tooltip: ""
+		DisplayName: AnglerCage
+	}
+
+	LuminiteStaff: {
+		Tooltip: True Lunar Bar
+		DisplayName: True Lunar Bar
+	}
 }
 
 BlackHoleStone: {
@@ -425,6 +458,11 @@ Buffs: {
 		Description: Hypnotic fish sounds brainwash you, boosting movement and attack speed—but watch your step!
 		DisplayName: Fishy Resonance
 	}
+
+	LuminiteMinionBuff: {
+		DisplayName: True Lunar Bar
+		Description: True Lunar Bar
+	}
 }
 
 Configs: {
@@ -438,5 +476,11 @@ Configs: {
 	}
 }
 
-Projectiles.BambooCicadaProjectile.DisplayName: Bamboo Cicada Projectile
+Projectiles: {
+	BambooCicadaProjectile.DisplayName: Bamboo Cicada Projectile
+	FakeCopperShortswordProj.DisplayName: True Hallowed Bar Proj
+	LuminiteStaffProj.DisplayName: True Lunar Bar Proj
+	LuminiteMinionProj.DisplayName: True Lunar Bar Proj
+}
+
 Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册
