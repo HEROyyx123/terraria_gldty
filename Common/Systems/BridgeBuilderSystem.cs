@@ -43,17 +43,26 @@ namespace terraria_gldty.Common.Systems
         public override void PostDrawTiles()
         {
             Player player = Main.LocalPlayer;
-            if (player.HeldItem != null && player.HeldItem.type == ModContent.ItemType<BridgeBuilderItem>() && BridgeBuilderSettings.ShowPreview)
+            if (player.HeldItem != null && !player.HeldItem.IsAir && player.HeldItem.type == ModContent.ItemType<BridgeBuilderItem>() && BridgeBuilderSettings.ShowPreview)
             {
-                int startX = (int)(Main.MouseWorld.X / 16f);
-                int startY = (int)(Main.MouseWorld.Y / 16f);
+                int startX = Player.tileTargetX;
+                int startY = Player.tileTargetY;
 
                 int length = BridgeBuilderSettings.Length;
                 BuildDirection dir = BridgeBuilderSettings.Direction;
 
-                Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.GameViewMatrix.TransformationMatrix);
+                // 使用 ZoomMatrix (仅处理画面缩放，坐标由 screenPosition 管理)
+                Main.spriteBatch.Begin(
+                    SpriteSortMode.Deferred,
+                    BlendState.AlphaBlend,
+                    SamplerState.PointClamp,
+                    DepthStencilState.None,
+                    RasterizerState.CullCounterClockwise,
+                    null,
+                    Main.GameViewMatrix.ZoomMatrix
+                );
 
-                Color lineTileColor = new Color(0, 255, 120, 150); // 平台/方块：半透明亮绿框
+                Color lineTileColor = new Color(0, 255, 120) * 0.6f;
 
                 if (dir == BuildDirection.Both)
                 {
@@ -62,7 +71,8 @@ namespace terraria_gldty.Common.Systems
                 }
                 else
                 {
-                    DrawPreviewPath(startX, startY, (int)dir, length, lineTileColor);
+                    int dirVal = dir == BuildDirection.Left ? -1 : 1;
+                    DrawPreviewPath(startX, startY, dirVal, length, lineTileColor);
                 }
 
                 Main.spriteBatch.End();
@@ -77,9 +87,9 @@ namespace terraria_gldty.Common.Systems
             bool isLightActive = lightTile >= 0 && BridgeBuilderSettings.LightSpacing > 0;
             bool isTorch = BridgeBuilderSettings.IsTorch(lightTile);
 
-            Color torchPreviewColor = new Color(255, 200, 40, 180);
-            Color lanternPreviewColor = new Color(80, 200, 255, 180);
-            Color destroyPreviewColor = new Color(255, 60, 60, 120); // 摧毁区域：半透明红框
+            Color torchPreviewColor = new Color(255, 200, 40) * 0.7f;
+            Color lanternPreviewColor = new Color(80, 200, 255) * 0.7f;
+            Color destroyPreviewColor = new Color(255, 60, 60) * 0.4f;
 
             for (int i = 0; i < length; i++)
             {
@@ -88,34 +98,44 @@ namespace terraria_gldty.Common.Systems
 
                 if (x < 10 || x >= Main.maxTilesX - 10) break;
 
+                // 计算屏幕像素坐标
+                int screenX = (int)(x * 16 - Main.screenPosition.X);
+
                 // 1. 绘制摧毁范围预览
                 for (int dy = -BridgeBuilderSettings.ClearUp; dy <= BridgeBuilderSettings.ClearDown; dy++)
                 {
                     if (dy == 0) continue;
                     int targetY = y + dy;
-                    Vector2 destroyPos = new Vector2(x * 16, targetY * 16) - Main.screenPosition;
-                    Main.spriteBatch.Draw(pixel, new Rectangle((int)destroyPos.X, (int)destroyPos.Y, 16, 16), destroyPreviewColor);
+                    int screenDestroyY = (int)(targetY * 16 - Main.screenPosition.Y);
+
+                    Main.spriteBatch.Draw(pixel, new Rectangle(screenX, screenDestroyY, 16, 16), destroyPreviewColor);
                 }
 
-                // 2. 绘制平台预览框 (16x16 像素)
-                Vector2 worldPos = new Vector2(x * 16, y * 16) - Main.screenPosition;
-                Main.spriteBatch.Draw(pixel, new Rectangle((int)worldPos.X, (int)worldPos.Y, 16, 16), tileColor);
+                // 2. 绘制平台预览框 (Rectangle 强制将图片剪裁限制为 16x16)
+                int screenY = (int)(y * 16 - Main.screenPosition.Y);
+                Main.spriteBatch.Draw(pixel, new Rectangle(screenX, screenY, 16, 16), tileColor);
 
                 // 3. 绘制光源预览框
                 if (isLightActive && i % BridgeBuilderSettings.LightSpacing == 0 && i > 0)
                 {
                     if (isTorch)
                     {
-                        Vector2 lightPos = new Vector2(x * 16, (y - 1) * 16) - Main.screenPosition;
-                        Main.spriteBatch.Draw(pixel, new Rectangle((int)lightPos.X, (int)lightPos.Y, 16, 16), torchPreviewColor);
+                        int screenTorchY = (int)((y - 1) * 16 - Main.screenPosition.Y);
+                        Main.spriteBatch.Draw(pixel, new Rectangle(screenX, screenTorchY, 16, 16), torchPreviewColor);
                     }
                     else
                     {
-                        Vector2 lightPos = new Vector2(x * 16, (y + 1) * 16) - Main.screenPosition;
-                        Main.spriteBatch.Draw(pixel, new Rectangle((int)lightPos.X, (int)lightPos.Y, 16, 32), lanternPreviewColor);
+                        int screenLanternY = (int)((y + 1) * 16 - Main.screenPosition.Y);
+                        Main.spriteBatch.Draw(pixel, new Rectangle(screenX, screenLanternY, 16, 32), lanternPreviewColor);
                     }
                 }
             }
+        }
+        // 添加坐标转换辅助方法
+        private Vector2 WorldToScreen(Vector2 worldPos)
+        {
+            // 使用Terraria的矩阵转换
+            return Vector2.Transform(worldPos - Main.screenPosition, Main.GameViewMatrix.ZoomMatrix);
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
