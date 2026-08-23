@@ -276,41 +276,51 @@ namespace terraria_gldty.Common.UI.BlackHoleStoneUI
         private readonly int _index;
         public int StoredType;
 
-        public FilterSlot(int index) {
+        public FilterSlot(int index)
+        {
             _index = index;
             Width.Set(48, 0f);
             Height.Set(48, 0f);
             OnLeftClick += (_, _) => HandleClick();
         }
 
-        private void HandleClick() {
+        private void HandleClick()
+        {
             var player = Main.LocalPlayer.GetModPlayer<Players.BlackHoleStonePlayer>();
             Item cursorItem = Main.mouseItem;
 
-            if (!cursorItem.IsAir) {
+            if (!cursorItem.IsAir)
+            {
                 player.FilterItems[_index] = cursorItem.type;
                 StoredType = cursorItem.type;
                 SoundEngine.PlaySound(SoundID.Grab);
             }
-            else {
+            else
+            {
                 player.FilterItems[_index] = 0;
                 StoredType = 0;
                 SoundEngine.PlaySound(SoundID.MenuTick);
             }
         }
 
-        protected override void DrawSelf(SpriteBatch spriteBatch) {
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
             base.DrawSelf(spriteBatch);
             CalculatedStyle dims = GetDimensions();
 
             Texture2D backTex = TextureAssets.InventoryBack.Value;
             spriteBatch.Draw(backTex, dims.Position(), Color.White * 0.7f);
 
-            if (StoredType > 0) {
+            // 防御性校验：只有 ID 大于 0 并且严格小于当前 Mod 物品总数上限时，才进行加载与绘制
+            if (StoredType > 0 && StoredType < ItemLoader.ItemCount)
+            {
                 Main.instance.LoadItem(StoredType);
-                if (ContentSamples.ItemsByType.TryGetValue(StoredType, out Item item) && !item.IsAir) {
+
+                if (ContentSamples.ItemsByType.TryGetValue(StoredType, out Item item) && !item.IsAir)
+                {
                     Texture2D itemTex = TextureAssets.Item[StoredType].Value;
-                    if (itemTex != null) {
+                    if (itemTex != null)
+                    {
                         float scale = Math.Min(36f / itemTex.Width, 36f / itemTex.Height);
                         spriteBatch.Draw(itemTex, dims.Center(), null, Color.White, 0f, itemTex.Size() * 0.5f, scale, SpriteEffects.None, 0f);
                     }

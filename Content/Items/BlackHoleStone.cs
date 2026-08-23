@@ -29,21 +29,14 @@ namespace terraria_gldty.Content.Items
 
         public override bool CanRightClick() => true;
 
+        // 重写此方法，防止右键时物品被消耗（不再需要手动重新插入背包）
+        public override bool ConsumeItem(Player player) => false;
+
         public override void RightClick(Player player) {
             if (Main.netMode == NetmodeID.Server)
                 return;
 
             ModContent.GetInstance<Common.UI.BlackHoleStoneUI.BlackHoleStoneUISystem>().ShowUI();
-
-            // 右键不会消耗物品，放回物品栏
-            Item clone = Item.Clone();
-            for (int i = 0; i < 50; i++) {
-                if (player.inventory[i].IsAir) {
-                    player.inventory[i] = clone;
-                    return;
-                }
-            }
-            player.QuickSpawnItem(player.GetSource_DropAsItem(), clone);
         }
     }
 }

@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using terraria_gldty.Common.Players;
 using terraria_gldty.Content.Items;
 
 namespace terraria_gldty.Common.Systems
@@ -15,7 +16,15 @@ namespace terraria_gldty.Common.Systems
         public int minionSlotCost = 1;
 
         private int contactAttackCooldown = 0;
-        public int finalDamage = 0;
+        public int invincibleTimer = 0;
+        
+        private Vector2 _savedPlayerCenter;
+        private bool _shiftedPlayerPosition;
+        private Vector2 _savedPlayerVelocity;
+
+        public bool isGiantAndGlow = false; 
+        private bool _hasScaled = false;    
+        public Vector2[] oldPos = new Vector2[6]; 
 
         public override bool InstancePerEntity => true;
 
@@ -27,33 +36,106 @@ namespace terraria_gldty.Common.Systems
 
         public override bool PreAI(NPC npc)
         {
-            // 1. 自动驯服蠕虫类怪物的身体与尾部
-            if (!isTamed && (npc.aiStyle == NPCAIStyleID.Worm || npc.realLife > -1))
+            // 自动同步蠕虫/长直类怪物的身体与尾部
+            bool isWormPart = npc.realLife >= 0 || npc.aiStyle == NPCAIStyleID.Worm;
+            if (isWormPart)
             {
-                int headIndex = (npc.realLife > -1) ? npc.realLife : (int)npc.ai[3];
-                if (headIndex >= 0 && headIndex < Main.maxNPCs)
+                int headIndex = (npc.realLife >= 0) ? npc.realLife : (int)npc.ai[3];
+                if (headIndex >= 0 && headIndex < Main.maxNPCs && headIndex != npc.whoAmI)
                 {
                     NPC headNPC = Main.npc[headIndex];
-                    if (headNPC.active && headNPC.GetGlobalNPC<TamedGlobalNPC>().isTamed)
+                    if (headNPC.active)
                     {
-                        isTamed = true;
-                        ownerPlayerID = headNPC.GetGlobalNPC<TamedGlobalNPC>().ownerPlayerID;
-                        minionSlotCost = 0;
-                        npc.friendly = true;
-                        npc.dontTakeDamage = headNPC.dontTakeDamage;
-                        npc.life = headNPC.life;
-                        npc.netUpdate = true;
+                        TamedGlobalNPC headGlobal = headNPC.GetGlobalNPC<TamedGlobalNPC>();
+                        if (headGlobal.isTamed)
+                        {
+                            isTamed = true;
+                            ownerPlayerID = headGlobal.ownerPlayerID;
+                            minionSlotCost = 0; 
+                            npc.friendly = true;
+
+                            invincibleTimer = headGlobal.invincibleTimer;
+                            isGiantAndGlow = headGlobal.isGiantAndGlow;
+                            npc.dontTakeDamage = headNPC.dontTakeDamage;
+
+                            npc.life = headNPC.life;
+                            npc.lifeMax = headNPC.lifeMax;
+                            npc.netUpdate = true;
+                        }
                     }
                 }
             }
 
             if (!isTamed) return base.PreAI(npc);
 
-            // 【新增关键修复】：防止沙虫/千足蜈蚣等地形依赖型蠕虫在空中秒死
+            // 判断主人是否拥有【契约枷锁】强化
+            if (ownerPlayerID >= 0 && ownerPlayerID < Main.maxPlayers) {
+                Player owner = Main.player[ownerPlayerID];
+                if (owner.active && owner.GetModPlayer<TamedPlayer>().usedContractShackles) {
+                    isGiantAndGlow = true;
+                }
+            }
+
+            // 体型与碰撞箱放大处理 (基础放大 1.35 倍)
+            if (isGiantAndGlow && !_hasScaled) {
+                _hasScaled = true;
+                float scaleFactor = 1.35f;
+
+                npc.scale *= scaleFactor;
+                
+                Vector2 originalCenter = npc.Center;
+                npc.width = (int)(npc.width * scaleFactor);
+                npc.height = (int)(npc.height * scaleFactor);
+                npc.Center = originalCenter;
+            }
+
+            // 【新增】：怪物发光效果（使用紫粉色调 R:0.6 G:0.3 B:0.8，可根据需要调整数值）
+            if (isGiantAndGlow) {
+                Lighting.AddLight(npc.Center, 0.6f, 0.3f, 0.8f);
+            }
+
+            // 虚影历史轨迹位置更新
+            for (int k = oldPos.Length - 1; k > 0; k--) {
+                oldPos[k] = oldPos[k - 1];
+            }
+            oldPos[0] = npc.position;
+
+            // 移动速度加成
+            if (isGiantAndGlow && npc.velocity != Vector2.Zero) {
+                npc.velocity *= 1.01f; 
+            }
+
+            // 处理 0.2 秒无敌帧
+            if (invincibleTimer > 0)
+            {
+                invincibleTimer--;
+                npc.dontTakeDamage = true;
+            }
+            else
+            {
+                bool isWormBodyOrTail = npc.realLife >= 0;
+                if (isWormBodyOrTail)
+                {
+                    NPC head = Main.npc[npc.realLife];
+                    if (head.active)
+                    {
+                        npc.dontTakeDamage = head.dontTakeDamage;
+                    }
+                }
+                else
+                {
+                    if (!npc.townNPC) 
+                    {
+                        npc.dontTakeDamage = false;
+                    }
+                }
+            }
+
+            // 长直类/蠕虫穿墙与无重力保障
             if (npc.aiStyle == NPCAIStyleID.Worm || npc.realLife >= 0)
             {
-                npc.noTileCollide = true; // 允许穿墙，防止沙虫因不在沙子/泥土里而自毁
-                npc.noGravity = true;     // 赋予空中飞行能力
+                npc.noTileCollide = true;
+                npc.noGravity = true;
             }
 
             if (ownerPlayerID < 0 || ownerPlayerID >= Main.maxPlayers)
@@ -62,26 +144,21 @@ namespace terraria_gldty.Common.Systems
                 return false;
             }
 
-            Player owner = Main.player[ownerPlayerID];
-            if (!owner.active || owner.dead)
+            Player ownerPlayer = Main.player[ownerPlayerID];
+            if (!ownerPlayer.active || ownerPlayer.dead)
             {
                 npc.active = false;
                 return false;
             }
 
-            npc.target = owner.whoAmI;
-
             if (contactAttackCooldown > 0) contactAttackCooldown--;
 
-
-            // 右键收回机制[cite: 5]
-            // 2. 右键收回机制
-            // 【修改】：改为判定鼠标位置距离怪物中心 80 像素以内，大幅提升点击容错率
+            // 右键收回机制
             if (Main.mouseRight && Main.mouseRightRelease && Vector2.Distance(Main.MouseWorld, npc.Center) < 80f)
             {
-                if (owner.HeldItem.type == ModContent.ItemType<SoulChain>())
+                if (ownerPlayer.HeldItem.type == ModContent.ItemType<SoulChain>())
                 {
-                    if (Vector2.Distance(owner.Center, npc.Center) < 150f)
+                    if (Vector2.Distance(ownerPlayer.Center, npc.Center) < 150f)
                     {
                         for (int i = 0; i < 15; i++)
                         {
@@ -108,21 +185,21 @@ namespace terraria_gldty.Common.Systems
                 }
             }
 
-            // 距离过远自动传送[cite: 5]
-            float distanceToOwner = Vector2.Distance(npc.Center, owner.Center);
+            // 距离过远自动传送
+            float distanceToOwner = Vector2.Distance(npc.Center, ownerPlayer.Center);
             if (distanceToOwner > 2000f) {
-                npc.Center = owner.Center;
+                npc.Center = ownerPlayer.Center;
                 npc.velocity = Vector2.Zero;
                 npc.netUpdate = true;
             }
 
-            // 索敌逻辑[cite: 5]
+            // 索敌逻辑
             NPC targetNPC = null;
             float maxSearchDistance = 800f;
             float closestDistance = maxSearchDistance;
 
-            if (owner.HasMinionAttackTargetNPC) {
-                NPC target = Main.npc[owner.MinionAttackTargetNPC];
+            if (ownerPlayer.HasMinionAttackTargetNPC) {
+                NPC target = Main.npc[ownerPlayer.MinionAttackTargetNPC];
                 if (target.active && (!target.friendly || target.type == NPCID.TargetDummy)) {
                     targetNPC = target;
                     closestDistance = Vector2.Distance(npc.Center, targetNPC.Center);
@@ -145,44 +222,29 @@ namespace terraria_gldty.Common.Systems
                 }
             }
 
+            // 玩家位置置换与接触伤害计算
+            npc.target = ownerPlayerID;
             if (targetNPC != null)
             {
-                npc.targetRect = targetNPC.Hitbox;
+                _savedPlayerCenter = ownerPlayer.Center;
+                _savedPlayerVelocity = ownerPlayer.velocity;
 
+                ownerPlayer.Center = targetNPC.Center;
+                ownerPlayer.velocity = targetNPC.velocity;
+                _shiftedPlayerPosition = true;
+
+                npc.targetRect = targetNPC.Hitbox;
                 int targetDir = targetNPC.Center.X >= npc.Center.X ? 1 : -1;
                 npc.direction = targetDir;
                 npc.spriteDirection = targetDir;
 
-                if (npc.noGravity)
-                {
-                    if (Vector2.Distance(npc.Center, targetNPC.Center) > 30f)
-                    {
-                        Vector2 toTarget = (targetNPC.Center - npc.Center).SafeNormalize(Vector2.Zero);
-                        float maxSpeed = 7.0f;
-                        float inertia = 0.08f;
-                        npc.velocity = Vector2.Lerp(npc.velocity, toTarget * maxSpeed, inertia);
-                    }
-                    else
-                    {
-                        npc.velocity *= 0.95f;
-                    }
-                }
-                else
-                {
-                    if (Vector2.Distance(npc.Center, targetNPC.Center) > 30f)
-                    {
-                        npc.velocity.X = MathHelper.Lerp(npc.velocity.X, targetDir * 5f, 0.1f);
-                    }
-                }
-
                 if (contactAttackCooldown <= 0 && npc.Hitbox.Intersects(targetNPC.Hitbox))
                 {
                     int baseDamage = npc.damage > 0 ? npc.damage : (npc.defDamage > 0 ? npc.defDamage : 20);
-
-                    StatModifier summonModifier = owner.GetTotalDamage(DamageClass.Summon);
+                    
+                    StatModifier summonModifier = ownerPlayer.GetTotalDamage(DamageClass.Summon).Scale(0.5f);
                     int finalDamage = (int)summonModifier.ApplyTo(baseDamage);
-
-                    bool isCrit = Main.rand.NextBool((int)owner.GetTotalCritChance(DamageClass.Summon));
+                    bool isCrit = Main.rand.NextBool((int)ownerPlayer.GetTotalCritChance(DamageClass.Summon));
 
                     int actualDamageDone = (int)targetNPC.SimpleStrikeNPC(
                         damage: finalDamage,
@@ -195,78 +257,108 @@ namespace terraria_gldty.Common.Systems
 
                     if (actualDamageDone > 0)
                     {
-                        owner.addDPS(actualDamageDone);
+                        ownerPlayer.addDPS(actualDamageDone);
                     }
 
                     contactAttackCooldown = 20;
                 }
-            } 
-            else {
-                npc.targetRect = owner.Hitbox;
-
-                if (distanceToOwner > 120f) {
-                    int dir = owner.Center.X > npc.Center.X ? 1 : -1;
-                    npc.direction = dir;
-                    npc.spriteDirection = dir;
-
-                    if (npc.noGravity) {
-                        Vector2 toOwner = (owner.Center - npc.Center).SafeNormalize(Vector2.Zero);
-                        npc.velocity = Vector2.Lerp(npc.velocity, toOwner * 5f, 0.03f);
-                    }
-                }
+            }
+            else
+            {
+                _shiftedPlayerPosition = false;
+                npc.targetRect = ownerPlayer.Hitbox;
             }
 
             return true;
         }
 
-        // 头顶醒目标记绘制[cite: 5]
+        public override void PostAI(NPC npc)
+        {
+            if (_shiftedPlayerPosition && ownerPlayerID >= 0 && ownerPlayerID < Main.maxPlayers)
+            {
+                Player owner = Main.player[ownerPlayerID];
+                if (owner.active)
+                {
+                    owner.Center = _savedPlayerCenter;
+                    owner.velocity = _savedPlayerVelocity;
+                }
+                _shiftedPlayerPosition = false;
+            }
+
+            base.PostAI(npc);
+        }
+
+        // 【修改】：绘制放大后的残影
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+            if (!isTamed || !npc.active || !isGiantAndGlow) return true;
+
+            Main.instance.LoadNPC(npc.type);
+            Texture2D texture = TextureAssets.Npc[npc.type].Value;
+            
+            SpriteEffects effects = npc.spriteDirection == 1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            Vector2 origin = npc.frame.Size() * 0.5f;
+
+            // 循环绘制历史帧残影
+            for (int i = oldPos.Length - 1; i > 0; i--) {
+                if (oldPos[i] == Vector2.Zero) continue;
+
+                float alpha = (float)(oldPos.Length - i) / oldPos.Length * 0.45f;
+                Color afterimageColor = Color.Lerp(Color.MediumPurple, Color.Cyan, (float)i / oldPos.Length) * alpha;
+
+                Vector2 drawPos = oldPos[i] + new Vector2(npc.width * 0.5f, npc.height * 0.5f) - screenPos;
+
+                // 【关键改动】：残影按倍率放大，i 越大（越早的残影帧）尺寸越大，呈现扩散巨化视觉效果
+                float afterimageScale = npc.scale * (1.2f + i * 0.05f);
+
+                spriteBatch.Draw(
+                    texture,
+                    drawPos,
+                    npc.frame,
+                    afterimageColor,
+                    npc.rotation,
+                    origin,
+                    afterimageScale, // 传入放大后的 Scale
+                    effects,
+                    0f
+                );
+            }
+
+            return true;
+        }
+
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
             if (!isTamed || !npc.active) return;
-
-            // 蠕虫类怪物只在头部节（Head）上绘制标记，避免身体每个节都画图标[cite: 5]
             if (npc.realLife >= 0 && npc.realLife != npc.whoAmI) return;
 
-            // 1. 计算头顶浮动坐标
             Vector2 headTop = new Vector2(npc.Center.X, npc.position.Y) - screenPos;
             float bounce = (float)System.Math.Sin(Main.GameUpdateCount * 0.12f) * 4f;
-            headTop.Y -= (22f + bounce); // 位于头顶上方 22 像素处浮动
+            headTop.Y -= (22f + bounce);
 
-            // 2. 呼吸灯颜色计算（青色到春绿色的动态发光效果）
-            float pulse = (float)(System.Math.Sin(Main.GameUpdateCount * 0.15f) + 1f) * 0.5f;
-            Color glowColor = Color.Lerp(new Color(50, 255, 150), new Color(0, 230, 255), pulse);
+            Color glowColor;
+            if (isGiantAndGlow) {
+                float pulseGlow = (float)(System.Math.Sin(Main.GameUpdateCount * 0.2f) + 1f) * 0.5f;
+                glowColor = Color.Lerp(new Color(180, 100, 255), new Color(0, 255, 255), pulseGlow);
+            } else {
+                float pulse = (float)(System.Math.Sin(Main.GameUpdateCount * 0.15f) + 1f) * 0.5f;
+                glowColor = Color.Lerp(new Color(50, 255, 150), new Color(0, 230, 255), pulse);
+            }
 
-            // 3. 绘制【▼】指示箭头
-            string arrowText = "▼";
-            Vector2 arrowSize = FontAssets.MouseText.Value.MeasureString(arrowText);
-            Vector2 arrowPos = headTop - arrowSize / 2f;
+            Utils.DrawBorderStringFourWay(spriteBatch, FontAssets.MouseText.Value, "▼", headTop.X - 6f, headTop.Y - 10f, glowColor, Color.Black, Vector2.Zero, 1.2f);
 
-            Utils.DrawBorderStringFourWay(
-                spriteBatch,
-                FontAssets.MouseText.Value,
-                arrowText,
-                arrowPos.X,
-                arrowPos.Y,
-                glowColor,
-                Color.Black,
-                Vector2.Zero,
-                1.2f
-            );
-
-            // 4. 在箭头上方绘制【★】金色友方标记
-            string starText = "★";
-            Vector2 starSize = FontAssets.MouseText.Value.MeasureString(starText);
-            Vector2 starPos = headTop - new Vector2(starSize.X / 2f, starSize.Y + 8f);
+            string displayName = npc.GivenOrTypeName;
+            float textScale = 0.9f;
+            Vector2 textSize = FontAssets.MouseText.Value.MeasureString(displayName) * textScale;
 
             Utils.DrawBorderStringFourWay(
-                spriteBatch,
-                FontAssets.MouseText.Value,
-                starText,
-                starPos.X,
-                starPos.Y,
-                Color.Gold,
-                Color.Black,
-                Vector2.Zero,
-                0.9f
+                spriteBatch, 
+                FontAssets.MouseText.Value, 
+                displayName, 
+                headTop.X - (textSize.X * 0.5f), 
+                headTop.Y - 24f, 
+                isGiantAndGlow ? Color.Violet : Color.Gold, 
+                Color.Black, 
+                Vector2.Zero, 
+                textScale
             );
         }
 
@@ -277,10 +369,7 @@ namespace terraria_gldty.Common.Systems
 
         public override bool CanHitNPC(NPC npc, NPC target) {
             if (isTamed) {
-                if (!target.friendly || target.type == NPCID.TargetDummy) {
-                    return true;
-                }
-                return false;
+                return !target.friendly || target.type == NPCID.TargetDummy;
             }
             return base.CanHitNPC(npc, target);
         }

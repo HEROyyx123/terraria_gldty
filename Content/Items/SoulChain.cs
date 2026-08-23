@@ -5,8 +5,8 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using terraria_gldty.Common;
 using terraria_gldty.Common.Players;
-using terraria_gldty.Common.Systems;
 
 namespace terraria_gldty.Content.Items
 {
@@ -28,7 +28,7 @@ namespace terraria_gldty.Content.Items
             return true;
         }
 
-        // 手持物品时在【玩家周围】绘制生效范围圈[cite: 2]
+        // 手持物品时在【玩家周围】绘制生效范围圈
         public override void HoldItem(Player player) {
             if (player.whoAmI == Main.myPlayer) {
                 Vector2 center = player.Center;
@@ -53,16 +53,16 @@ namespace terraria_gldty.Content.Items
 
             tooltips.Add(new TooltipLine(Mod, "UsageTip", $"[c/00FFFF:提示：手持左键快捷召唤上次选择的怪物，圈内右键可捕捉/收回敌怪，按 {keyName} 键打开手册，怪物伤害受召唤伤害加成]"));
 
-            // 获取玩家当前选中的怪物信息[cite: 4]
+            // 获取玩家当前选中的怪物信息
             var modPlayer = Main.LocalPlayer.GetModPlayer<TamedPlayer>();
             int npcType = modPlayer.LastSummonedType;
 
             if (npcType > 0 && npcType < NPCLoader.NPCCount && modPlayer.UnlockedNPCTypes.Contains(npcType)) {
                 if (ContentSamples.NpcsByNetId.TryGetValue(npcType, out NPC sampleNPC)) {
                     Player player = Main.LocalPlayer;
-                    // 计算加成后的召唤伤害[cite: 3, 5]
-                    int displayDamage = (int)player.GetTotalDamage(DamageClass.Summon).ApplyTo(sampleNPC.defDamage);
-
+                    
+                    StatModifier summonModifier = player.GetTotalDamage(DamageClass.Summon).Scale(0.5f);
+                    int displayDamage = (int)summonModifier.ApplyTo(sampleNPC.defDamage);
                     tooltips.Add(new TooltipLine(Mod, "TargetHeader", $"[c/FFD700:【快捷召唤目标】: {sampleNPC.GivenOrTypeName}]"));
                     tooltips.Add(new TooltipLine(Mod, "TargetStats", $"  生命: [c/55FF55:{sampleNPC.lifeMax}] | 防御: [c/55FFFF:{sampleNPC.defense}] | 伤害: [c/FF6347:{displayDamage}]"));
                     tooltips.Add(new TooltipLine(Mod, "TargetIconSpace", "      ")); // 占位空行，用于下面绘制怪物贴图
@@ -72,9 +72,9 @@ namespace terraria_gldty.Content.Items
             }
         }
 
-        // 绘制 Tooltip 中怪物的预览贴图[cite: 3]
+        // 绘制 Tooltip 中怪物的预览贴图
         public override void PostDrawTooltipLine(DrawableTooltipLine line) {
-            if (line.Mod == "terraria_gldty" && line.Name == "TargetIconSpace") {
+            if (line.Mod == "TamedMinions" && line.Name == "TargetIconSpace") {
                 var modPlayer = Main.LocalPlayer.GetModPlayer<TamedPlayer>();
                 int npcType = modPlayer.LastSummonedType;
 
@@ -85,7 +85,7 @@ namespace terraria_gldty.Content.Items
                     int frameCount = Main.npcFrameCount[npcType];
                     Rectangle frame = new Rectangle(0, 0, texture.Width, texture.Height / frameCount);
 
-                    // 缩放适应 Tooltip 行高[cite: 3]
+                    // 缩放适应 Tooltip 行高
                     float scale = 1f;
                     if (frame.Height > 36) scale = 36f / frame.Height;
                     if (frame.Width * scale > 60) scale = 60f / frame.Width;
@@ -96,35 +96,72 @@ namespace terraria_gldty.Content.Items
             }
         }
 
+        /// <summary>
+        /// 获取长直类/蠕虫怪物的头部 NPC；若不是长直类，则返回自身。
+        /// </summary>
+        private NPC GetWormHead(NPC npc) {
+            if (npc == null || !npc.active) return npc;
+
+            // 1. 通过 realLife 寻找头部
+            if (npc.realLife >= 0 && npc.realLife < Main.maxNPCs) {
+                NPC head = Main.npc[npc.realLife];
+                if (head.active) return head;
+            }
+
+            // 2. 部分蠕虫 AI 方案使用 ai[3] 指向头部
+            if (npc.aiStyle == NPCAIStyleID.Worm && npc.ai[3] >= 0 && npc.ai[3] < Main.maxNPCs) {
+                NPC head = Main.npc[(int)npc.ai[3]];
+                if (head.active) return head;
+            }
+
+            return npc;
+        }
+
         public override bool? UseItem(Player player) {
             Vector2 mousePos = Main.MouseWorld;
             var modPlayer = player.GetModPlayer<TamedPlayer>();
 
-            // 右键：捕捉[cite: 2, 5]
+            // 右键：捕捉
             if (player.altFunctionUse == 2) {
                 for (int i = 0; i < Main.maxNPCs; i++) {
                     NPC target = Main.npc[i];
                     if (target.active && !target.friendly && target.damage > 0 && !target.boss && !target.dontTakeDamage) {
                         if (Vector2.Distance(player.Center, target.Center) <= 150f && Vector2.Distance(mousePos, target.Center) < 50f) {
-                            if (!modPlayer.UnlockedNPCTypes.Contains(target.type)) {
-                                modPlayer.UnlockedNPCTypes.Add(target.type);
-                                modPlayer.LastSummonedType = target.type;
-                                Main.NewText($"成功捕获并解锁图鉴: {target.GivenOrTypeName}！", Color.Green);
+                            
+                            // 获取实际的头部 NPC，确保无论点击哪个体节，捕获和保存的都是头部类型
+                            NPC headNPC = GetWormHead(target);
+
+                            if (!modPlayer.UnlockedNPCTypes.Contains(headNPC.type)) {
+                                modPlayer.UnlockedNPCTypes.Add(headNPC.type);
+                                modPlayer.LastSummonedType = headNPC.type;
+                                Main.NewText($"成功捕获并解锁图鉴: {headNPC.GivenOrTypeName}！", Color.Green);
                             } else {
-                                Main.NewText($"已收录 {target.GivenOrTypeName} 的图鉴信息。", Color.Yellow);
+                                Main.NewText($"已收录 {headNPC.GivenOrTypeName} 的图鉴信息。", Color.Yellow);
                             }
                             
                             for (int d = 0; d < 20; d++) {
                                 Dust.NewDust(target.position, target.width, target.height, DustID.Enchanted_Pink, 0, 0);
                             }
 
-                            target.active = false;
+                            // 如果是蠕虫类，将关联的所有体节/头部一起移除
+                            if (target.aiStyle == NPCAIStyleID.Worm || target.realLife >= 0) {
+                                int headID = (target.realLife >= 0) ? target.realLife : target.whoAmI;
+                                for (int j = 0; j < Main.maxNPCs; j++) {
+                                    NPC other = Main.npc[j];
+                                    if (other.active && (other.whoAmI == headID || other.realLife == headID || other.ai[3] == headID)) {
+                                        other.active = false;
+                                    }
+                                }
+                            } else {
+                                target.active = false;
+                            }
+
                             return true;
                         }
                     }
                 }
             }
-            // 左键：快捷召唤[cite: 1]
+            // 左键：快捷召唤
             else {
                 if (modPlayer.UnlockedNPCTypes.Count > 0) {
                     int targetType = modPlayer.LastSummonedType;
@@ -152,7 +189,7 @@ namespace terraria_gldty.Content.Items
         public override void AddRecipes() {
             CreateRecipe()
                 .AddIngredient(ItemID.Chain, 10)
-                .AddIngredient(ItemID.Book, 1)//ManaCrystal
+                .AddIngredient(ItemID.Book, 1)
                 .AddIngredient(ItemID.ManaCrystal, 1)
                 .AddTile(TileID.Bookcases)
                 .Register();

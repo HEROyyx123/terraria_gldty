@@ -5,7 +5,7 @@ using Terraria.GameInput;
 using Terraria.ModLoader;
 using Terraria.UI;
 
-namespace terraria_gldty.Common.Systems
+namespace terraria_gldty.Common
 {
     public class TamedSystem : ModSystem
     {

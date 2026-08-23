@@ -10,7 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using terraria_gldty.Common.UI.Globals; // 引用上面的 GlobalItem 命名空间
+using terraria_gldty.Common.UI.Globals;
 
 namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
 {
@@ -18,16 +18,14 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
     {
         private UIPanel panel;
         private UIImageButton closeButton;
-        private ItemSlot slot;
+        private CustomWorkshopItemSlot slot;
         private UIList prefixList;
         private UIScrollbar scrollbar;
         private UIText statusText;
 
-        // --- 新增：伤害类型修改相关控件 ---
-        private UIText damageTypeTitle;
         private UIText currentDamageTypeText;
-        private UITextPanel<string> changeDamageTypeBtn;
-        private UITextPanel<string> resetDamageTypeBtn; // 新增：重置按钮
+        private UIPanel changeDamageTypeBtn;
+        private UIPanel resetDamageTypeBtn;
         private int selectedDamageTypeIndex = -1;
 
         private int storedItemType;
@@ -38,107 +36,126 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
         private Vector2 _dragOffset;
 
         public override void OnInitialize() {
+            // 主面板：科技感深蓝底色 + 霓虹青色微光边框
             panel = new UIPanel();
-            panel.SetPadding(12);
-            panel.Width.Set(480, 0f);
-            panel.Height.Set(560, 0f); // 稍微调高面板以容纳新功能
-            panel.Left.Set(Main.screenWidth / 2 - 240, 0f);
-            panel.Top.Set(Main.screenHeight / 2 - 280, 0f);
-            panel.BackgroundColor = new Color(30, 30, 50, 230);
-            panel.BorderColor = new Color(100, 80, 180, 255);
+            panel.SetPadding(14);
+            panel.Width.Set(460, 0f);
+            panel.Height.Set(540, 0f);
+            panel.Left.Set(Main.screenWidth / 2 - 230, 0f);
+            panel.Top.Set(Main.screenHeight / 2 - 270, 0f);
+            panel.BackgroundColor = new Color(16, 20, 36, 240);
+            panel.BorderColor = new Color(0, 190, 230, 220);
             Append(panel);
 
-            var titleText = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.DisplayName"), 1.1f);
-            titleText.Left.Set(10, 0f);
+            // 标题：优雅天青配色
+            var titleText = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.DisplayName"), 0.6f, true);
+            titleText.Left.Set(8, 0f);
             titleText.Top.Set(8, 0f);
-            titleText.TextColor = Color.LightSkyBlue;
+            titleText.TextColor = new Color(110, 225, 255);
             panel.Append(titleText);
 
+            // 1. 关闭按钮：利用 HAlign 右对齐，锁定在右上角
             closeButton = new UIImageButton(ModContent.Request<Texture2D>("Terraria/Images/UI/SearchCancel"));
-            closeButton.Width.Set(64, 0f);
-            closeButton.Height.Set(64, 0f);
-            closeButton.Left.Set(430, 0f);
-            closeButton.Top.Set(1, 0f);
+            closeButton.HAlign = 1f;
+            closeButton.Left.Set(-4, 0f);
+            closeButton.Top.Set(8, 0f);
             closeButton.OnLeftClick += (evt, _) => CloseUI();
             panel.Append(closeButton);
 
-            var instructionText = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.Instruction"), 0.85f);
-            instructionText.Left.Set(10, 0f);
-            instructionText.Top.Set(40, 0f);
-            instructionText.TextColor = Color.Gray;
-            panel.Append(instructionText);
-
-            slot = new ItemSlot();
-            slot.Left.Set(10, 0f);
-            slot.Top.Set(65, 0f);
+            // 存入物品槽
+            slot = new CustomWorkshopItemSlot();
+            slot.Left.Set(8, 0f);
+            slot.Top.Set(48, 0f);
             panel.Append(slot);
 
-            statusText = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.PlaceItem"), 0.9f);
-            statusText.Left.Set(70, 0f);
-            statusText.Top.Set(68, 0f);
-            statusText.TextColor = Color.Gold;
+            // 状态 / 成本信息
+            statusText = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.PlaceItem"), 0.82f);
+            statusText.Left.Set(66, 0f);
+            statusText.Top.Set(48, 0f);
+            statusText.TextColor = new Color(255, 215, 100);
             panel.Append(statusText);
 
-            // ================= 新增：伤害类型转换区域 =================
-            currentDamageTypeText = new UIText("伤害类型: 原版默认", 0.85f);
-            currentDamageTypeText.Left.Set(70, 0f);
-            currentDamageTypeText.Top.Set(92, 0f);
-            currentDamageTypeText.TextColor = Color.LightGreen;
+            // 伤害类型状态
+            currentDamageTypeText = new UIText("伤害类型: 未放入物品", 0.78f);
+            currentDamageTypeText.Left.Set(66, 0f);
+            currentDamageTypeText.Top.Set(72, 0f);
+            currentDamageTypeText.TextColor = new Color(160, 210, 230);
             panel.Append(currentDamageTypeText);
 
-            // 切换按钮
-            changeDamageTypeBtn = new UITextPanel<string>("切换类型");
-            changeDamageTypeBtn.Left.Set(260, 0f);
-            changeDamageTypeBtn.Top.Set(65, 0f);
-            changeDamageTypeBtn.Width.Set(90, 0f);
-            changeDamageTypeBtn.Height.Set(35, 0f);
-            changeDamageTypeBtn.OnLeftClick += OnChangeDamageTypeClick;
+            // 美化后的操作按钮
+            changeDamageTypeBtn = CreateSciFiButton("切换类型", 240, 48, 90, 28, OnChangeDamageTypeClick);
             panel.Append(changeDamageTypeBtn);
 
-            // 复原/重置按钮
-            resetDamageTypeBtn = new UITextPanel<string>("恢复默认");
-            resetDamageTypeBtn.Left.Set(360, 0f);
-            resetDamageTypeBtn.Top.Set(65, 0f);
-            resetDamageTypeBtn.Width.Set(90, 0f);
-            resetDamageTypeBtn.Height.Set(35, 0f);
-            resetDamageTypeBtn.OnLeftClick += OnResetDamageTypeClick;
+            resetDamageTypeBtn = CreateSciFiButton("恢复默认", 338, 48, 90, 28, OnResetDamageTypeClick);
             panel.Append(resetDamageTypeBtn);
-            // ==========================================================
 
+            // 滚动条与前缀列表
             scrollbar = new UIScrollbar();
-            scrollbar.Height.Set(380, 0f);
-            scrollbar.Left.Set(455, 0f);
-            scrollbar.Top.Set(150, 0f);
+            scrollbar.Height.Set(410, 0f);
+            scrollbar.Left.Set(424, 0f);
+            scrollbar.Top.Set(110, 0f);
             panel.Append(scrollbar);
 
             prefixList = new UIList();
-            prefixList.Height.Set(380, 0f);
-            prefixList.Width.Set(430, 0f);
-            prefixList.Left.Set(10, 0f);
-            prefixList.Top.Set(150, 0f);
+            prefixList.Height.Set(410, 0f);
+            prefixList.Width.Set(406, 0f);
+            prefixList.Left.Set(8, 0f);
+            prefixList.Top.Set(110, 0f);
             prefixList.SetScrollbar(scrollbar);
             panel.Append(prefixList);
         }
 
-        // 按钮点击事件：切换伤害类型
+        private UIPanel CreateSciFiButton(string text, float x, float y, float w, float h, UIElement.MouseEvent onClick) {
+            UIPanel btn = new UIPanel();
+            btn.Left.Set(x, 0f);
+            btn.Top.Set(y, 0f);
+            btn.Width.Set(w, 0f);
+            btn.Height.Set(h, 0f);
+            btn.SetPadding(0);
+
+            Color defaultBg = new Color(28, 40, 70, 220);
+            Color defaultBorder = new Color(0, 150, 200, 180);
+
+            btn.BackgroundColor = defaultBg;
+            btn.BorderColor = defaultBorder;
+
+            UIText txt = new UIText(text, 0.78f) { HAlign = 0.5f, VAlign = 0.5f };
+            txt.TextColor = new Color(210, 240, 255);
+            btn.Append(txt);
+
+            btn.OnLeftClick += (evt, el) => {
+                SoundEngine.PlaySound(SoundID.MenuTick);
+                onClick?.Invoke(evt, el);
+            };
+
+            btn.OnMouseOver += (evt, el) => {
+                SoundEngine.PlaySound(SoundID.MenuTick);
+                btn.BackgroundColor = new Color(45, 80, 130, 240);
+                btn.BorderColor = new Color(0, 230, 255, 255);
+                txt.TextColor = Color.White;
+            };
+
+            btn.OnMouseOut += (evt, el) => {
+                btn.BackgroundColor = defaultBg;
+                btn.BorderColor = defaultBorder;
+                txt.TextColor = new Color(210, 240, 255);
+            };
+
+            return btn;
+        }
+
         private void OnChangeDamageTypeClick(UIMouseEvent evt, UIElement listeningElement) {
             if (storedItemType <= 0) return;
-
             selectedDamageTypeIndex++;
             if (selectedDamageTypeIndex >= CustomDamageTypeItem.DamageClasses.Count) {
-                selectedDamageTypeIndex = 0; // 循环切换
+                selectedDamageTypeIndex = 0;
             }
-
-            SoundEngine.PlaySound(SoundID.MenuTick);
             UpdateDamageTypeDisplay();
         }
 
-        // 新增：重置为默认原版伤害类型
         private void OnResetDamageTypeClick(UIMouseEvent evt, UIElement listeningElement) {
             if (storedItemType <= 0) return;
-
-            selectedDamageTypeIndex = -1; // -1 代表还原原版类型
-            SoundEngine.PlaySound(SoundID.MenuTick);
+            selectedDamageTypeIndex = -1;
             UpdateDamageTypeDisplay();
         }
 
@@ -160,11 +177,11 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             slot.StoredType = storedItemType;
             slot.StoredStack = storedItemStack;
             slot.StoredPrefix = storedItemPrefix;
-            selectedDamageTypeIndex = slot.StoredDamageTypeIndex; // 恢复选择
+            selectedDamageTypeIndex = slot.StoredDamageTypeIndex;
             UpdatePrefixList();
             UpdateDamageTypeDisplay();
-            panel.Left.Set(Main.screenWidth / 2 - 240, 0f);
-            panel.Top.Set(Main.screenHeight / 2 - 280, 0f);
+            panel.Left.Set(Main.screenWidth / 2 - 230, 0f);
+            panel.Top.Set(Main.screenHeight / 2 - 270, 0f);
         }
 
         private void CloseUI() {
@@ -174,7 +191,6 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
                 item.stack = storedItemStack;
                 item.Prefix(storedItemPrefix);
 
-                // 还原修改后的伤害类型
                 if (selectedDamageTypeIndex >= 0) {
                     var globalItem = item.GetGlobalItem<CustomDamageTypeItem>();
                     globalItem.OverrideDamageTypeIndex = selectedDamageTypeIndex;
@@ -204,7 +220,7 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             }
 
             CalculatedStyle dims = panel.GetDimensions();
-            Rectangle titleBar = new Rectangle((int)dims.X, (int)dims.Y, (int)dims.Width, 30);
+            Rectangle titleBar = new Rectangle((int)dims.X, (int)dims.Y, (int)dims.Width, 35);
             if (!_dragging && Main.mouseLeft && titleBar.Contains(Main.MouseScreen.ToPoint()) && !closeButton.ContainsPoint(Main.MouseScreen)) {
                 _dragging = true;
                 _dragOffset = Main.MouseScreen - new Vector2(dims.X, dims.Y);
@@ -213,8 +229,7 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             if (_dragging) {
                 if (!Main.mouseLeft) {
                     _dragging = false;
-                }
-                else {
+                } else {
                     panel.Left.Set(Main.mouseX - _dragOffset.X, 0f);
                     panel.Top.Set(Main.mouseY - _dragOffset.Y, 0f);
                     panel.Recalculate();
@@ -234,9 +249,8 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
                 Item item = ContentSamples.ItemsByType[storedItemType];
                 string name = Lang.GetItemNameValue(storedItemType);
                 long cost = (long)(item.value * 3f);
-                statusText.SetText(name + " | " + Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.Cost") + " " + FormatCoins(cost));
-            }
-            else {
+                statusText.SetText(name + " | 消耗 " + FormatCoins(cost));
+            } else {
                 statusText.SetText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.PlaceItem"));
             }
         }
@@ -258,8 +272,8 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             }
 
             if (applicablePrefixes.Count == 0) {
-                var noPrefix = new UIText(Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.NoPrefixes"), 0.8f);
-                noPrefix.TextColor = Color.Red;
+                var noPrefix = new UIText("该物品无法强化词条", 0.8f);
+                noPrefix.TextColor = new Color(255, 100, 100);
                 prefixList.Add(noPrefix);
                 return;
             }
@@ -286,14 +300,11 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             newItem.SetDefaults(storedItemType);
             newItem.Prefix(prefixId);
 
-            // 应用选中的伤害类型信息到新生成的物品上
             if (selectedDamageTypeIndex >= 0 && selectedDamageTypeIndex < CustomDamageTypeItem.DamageClasses.Count) {
                 var customData = newItem.GetGlobalItem<CustomDamageTypeItem>();
                 customData.OverrideDamageTypeIndex = selectedDamageTypeIndex;
                 newItem.DamageType = CustomDamageTypeItem.DamageClasses[selectedDamageTypeIndex];
-                 //以下测试代码***********************************************
-                customData.ApplyDamageType(newItem); // 手动应用一次
-                //**********************************************************
+                customData.ApplyDamageType(newItem);
             }
 
             storedItemType = 0;
@@ -324,9 +335,7 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
 
         private bool TryRemoveCoins(Player player, long amount) {
             if (amount <= 0) return true;
-            if (!player.CanAfford(amount)) {
-                return false;
-            }
+            if (!player.CanAfford(amount)) return false;
             return player.BuyItem(amount);
         }
 
@@ -347,16 +356,16 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
         }
     }
 
-    internal class ItemSlot : UIElement
+    internal class CustomWorkshopItemSlot : UIElement
     {
         public int StoredType;
         public int StoredStack = 1;
         public int StoredPrefix;
-        public int StoredDamageTypeIndex = -1; // 记录放到槽里的物品原有的伤害类型修改
+        public int StoredDamageTypeIndex = -1;
 
-        public ItemSlot() {
-            Width.Set(52, 0f);
-            Height.Set(52, 0f);
+        public CustomWorkshopItemSlot() {
+            this.Width.Set(48, 0f);
+            this.Height.Set(48, 0f);
             OnLeftClick += (_, _) => HandleClick();
         }
 
@@ -399,14 +408,15 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             CalculatedStyle dims = GetDimensions();
 
             Texture2D backTex = TextureAssets.InventoryBack.Value;
-            spriteBatch.Draw(backTex, dims.Position(), Color.White);
+            Color slotColor = IsMouseHovering ? new Color(0, 200, 255) : new Color(180, 220, 255);
+            spriteBatch.Draw(backTex, dims.Position(), slotColor);
 
             if (StoredType > 0) {
                 Main.instance.LoadItem(StoredType);
                 if (ContentSamples.ItemsByType.TryGetValue(StoredType, out Item item) && !item.IsAir) {
                     Texture2D itemTex = TextureAssets.Item[StoredType].Value;
                     if (itemTex != null) {
-                        float scale = Math.Min(40f / itemTex.Width, 40f / itemTex.Height);
+                        float scale = Math.Min(36f / itemTex.Width, 36f / itemTex.Height);
                         spriteBatch.Draw(itemTex, dims.Center(), null, Color.White, 0f, itemTex.Size() * 0.5f, scale, SpriteEffects.None, 0f);
                     }
                 }
@@ -441,10 +451,10 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             _previewItem.SetDefaults(_itemType);
             _previewItem.Prefix(_prefixId);
 
-            Width.Set(410, 0f);
-            Height.Set(36, 0f);
-            BackgroundColor = new Color(40, 40, 60, 200);
-            BorderColor = new Color(80, 70, 140, 200);
+            this.Width.Set(400, 0f);
+            this.Height.Set(34, 0f);
+            BackgroundColor = new Color(20, 28, 48, 200);
+            BorderColor = new Color(0, 120, 160, 180);
             SetPadding(4);
             OnLeftClick += (_, _) => Craft();
         }
@@ -459,23 +469,24 @@ namespace terraria_gldty.Common.UI.EnchantingWorkshopUI
             CalculatedStyle dims = GetDimensions();
 
             if (IsMouseHovering && Main.mouseItem.IsAir) {
-                BackgroundColor = new Color(70, 70, 100, 230);
+                BackgroundColor = new Color(35, 60, 95, 230);
+                BorderColor = new Color(0, 220, 255);
                 Main.HoverItem = _previewItem.Clone();
                 Main.hoverItemName = _previewItem.Name;
-            }
-            else {
-                BackgroundColor = new Color(40, 40, 60, 200);
+            } else {
+                BackgroundColor = new Color(20, 28, 48, 200);
+                BorderColor = new Color(0, 120, 160, 180);
             }
 
             string prefixName = Lang.prefix[_prefixId].Value;
-            Utils.DrawBorderString(spriteBatch, prefixName, new Vector2(dims.X + 8, dims.Y + 8), Color.White, 0.8f);
+            Terraria.Utils.DrawBorderString(spriteBatch, prefixName, new Vector2(dims.X + 10, dims.Y + 6), Color.White, 0.8f);
 
             Item baseItem = ContentSamples.ItemsByType[_itemType];
             long cost = (long)(baseItem.value * 3f);
-            string costText = Language.GetTextValue("Mods.terraria_gldty.EnchantingWorkshop.CostShort") + " " + EnchantingWorkshopUI.FormatCoins(cost);
-            Utils.DrawBorderString(spriteBatch, costText, new Vector2(dims.X + dims.Width - 120, dims.Y + 8), Color.Gold, 0.7f);
+            string costText = "消耗 " + EnchantingWorkshopUI.FormatCoins(cost);
+            
+            Vector2 textSize = FontAssets.MouseText.Value.MeasureString(costText) * 0.75f;
+            Terraria.Utils.DrawBorderString(spriteBatch, costText, new Vector2(dims.X + dims.Width - textSize.X - 10, dims.Y + 6), new Color(255, 215, 100), 0.75f);
         }
     }
 }
-
-

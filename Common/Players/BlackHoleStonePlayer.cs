@@ -6,9 +6,6 @@ using Terraria.ModLoader.IO;
 
 namespace terraria_gldty.Common.Players
 {
-    /// <summary>
-    /// 黑洞石玩家数据类 - 管理拾取范围、过滤和UI状态
-    /// </summary>
     public class BlackHoleStonePlayer : ModPlayer
     {
         public bool HasBlackHoleStone;
@@ -17,18 +14,18 @@ namespace terraria_gldty.Common.Players
         public float PickupRange = 0f;
         public bool HasOpenedUI;
 
-       public override void ResetEffects() {
-           HasBlackHoleStone = false;
-           for (int i = 0; i < 58; i++) {
-               Item item = Player.inventory[i];
-               if (!item.IsAir && item.type == ModContent.ItemType<Content.Items.BlackHoleStone>()) {
-                   HasBlackHoleStone = true;
-                   break;
-               }
-           }
-       }
+        public override void ResetEffects() {
+            HasBlackHoleStone = false;
+            for (int i = 0; i < 58; i++) {
+                Item item = Player.inventory[i];
+                if (!item.IsAir && item.type == ModContent.ItemType<Content.Items.BlackHoleStone>()) {
+                    HasBlackHoleStone = true;
+                    break;
+                }
+            }
+        }
 
-       public bool IsItemInFilter(Item item) {
+        public bool IsItemInFilter(Item item) {
             if (PickUpAll) return true;
             if (item.IsAir) return false;
             for (int i = 0; i < 10; i++) {
@@ -46,21 +43,31 @@ namespace terraria_gldty.Common.Players
             return false;
         }
 
+        // 修改：使用 ItemIO 或验证 ItemData 安全性
         public override void SaveData(TagCompound tag) {
             tag["PickUpAll"] = PickUpAll;
             tag["PickupRange"] = PickupRange;
             tag["HasOpenedUI"] = HasOpenedUI;
-            for (int i = 0; i < 10; i++) {
-                if (FilterItems[i] > 0) tag[$"FilterItem{i}"] = FilterItems[i];
-            }
+            
+            // 存入 FilterItems 数组
+            tag["FilterItems"] = FilterItems;
         }
 
         public override void LoadData(TagCompound tag) {
             PickUpAll = tag.GetBool("PickUpAll");
             PickupRange = tag.GetFloat("PickupRange");
             HasOpenedUI = tag.GetBool("HasOpenedUI");
-            for (int i = 0; i < 10; i++) {
-                FilterItems[i] = tag.ContainsKey($"FilterItem{i}") ? tag.GetInt($"FilterItem{i}") : 0;
+
+            if (tag.ContainsKey("FilterItems")) {
+                FilterItems = tag.GetIntArray("FilterItems");
+                // 防护：载入后检查 ID 合法性，如果越界直接重置为 0，防止 UI 崩掉
+                for (int i = 0; i < FilterItems.Length; i++) {
+                    if (FilterItems[i] >= ItemLoader.ItemCount || FilterItems[i] < 0) {
+                        FilterItems[i] = 0;
+                    }
+                }
+            } else {
+                FilterItems = new int[10];
             }
         }
     }

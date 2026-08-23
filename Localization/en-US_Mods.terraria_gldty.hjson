@@ -382,6 +382,68 @@ Items: {
 		Tooltip: True Lunar Bar
 		DisplayName: True Lunar Bar
 	}
+
+	AnomalyAccessory1: {
+		Tooltip:
+			'''
+			Reduces contact damage taken by 15% and slightly increases life regeneration
+			Decreases damage dealt by 20%
+			'''
+		DisplayName: Anomaly Static Amulet
+	}
+
+	TurbulentBarometer: {
+		DisplayName: Dread Barometer
+		Tooltip:
+			'''
+			Tears the order of Terraria apart to summon a terrifying rain of monster boulders. Use again to cancel the event
+			The event is greatly empowered in Hardmode
+			"Perhaps I should do something in this monster rain with the Soul Handbook"
+			'''
+	}
+
+	AnomalyAccessory2: {
+		Tooltip:
+			'''
+			Reduces damage taken by 20% and greatly increases life regeneration
+			Decreases damage dealt by 10%
+			'''
+		DisplayName: Rampant Bloodtide Amulet
+	}
+
+	AnomalyAccessory3: {
+		Tooltip:
+			'''
+			Reduces damage taken by 25% and greatly increases life regeneration
+			Increases damage dealt by 5%
+			'''
+		DisplayName: Void Amulet
+	}
+
+	AuricStaff: {
+		Tooltip: A copper shortsword once used by Yharim
+		DisplayName: True Copper Shortsword
+	}
+
+	ContractShackles: {
+		DisplayName: Contract Shackles
+		Tooltip: ""
+	}
+
+	SoulMark: {
+		DisplayName: Soul Mark
+		Tooltip: ""
+	}
+
+	HomologousParticle: {
+		DisplayName: Homologous Particle
+		Tooltip: ""
+	}
+
+	ResonanceTransmuterItem: {
+		DisplayName: Resonance Transmuter Item
+		Tooltip: ""
+	}
 }
 
 BlackHoleStone: {
@@ -431,7 +493,10 @@ Conditions: {
 	}
 }
 
-Tiles.EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile
+Tiles: {
+	EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile
+	ResonanceTransmuterTile.MapEntry: Resonance Transmuter Tile
+}
 
 Buffs: {
 	CMoonBuff: {
@@ -463,6 +528,11 @@ Buffs: {
 		DisplayName: True Lunar Bar
 		Description: True Lunar Bar
 	}
+
+	AuricMinionBuff: {
+		Description: Mods.terraria_gldty.Buffs.AuricMinionBuff.Description
+		DisplayName: Auric Minion Buff
+	}
 }
 
 Configs: {
@@ -481,6 +551,8 @@ Projectiles: {
 	FakeCopperShortswordProj.DisplayName: True Hallowed Bar Proj
 	LuminiteStaffProj.DisplayName: True Lunar Bar Proj
 	LuminiteMinionProj.DisplayName: True Lunar Bar Proj
+	GiganticBoulder.DisplayName: Gigantic Boulder
+	AuricMinionProj.DisplayName: CopperShortsword Proj
 }
 
 Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册

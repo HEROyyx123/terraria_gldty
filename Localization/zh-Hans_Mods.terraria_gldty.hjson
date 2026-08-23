@@ -382,6 +382,76 @@ Items: {
 		Tooltip: 天界能量的真正形态
 		DisplayName: 真夜明锭
 	}
+
+	AnomalyAccessory1: {
+		Tooltip:
+			'''
+			受到的接触伤害降低 15%，小幅增加生命再生
+			造成的伤害减少 20%
+			'''
+		DisplayName: 异域静流护符
+	}
+
+	TurbulentBarometer: {
+		DisplayName: 恐怖气球
+		Tooltip:
+			'''
+			撕裂泰拉大陆的秩序，召唤一场恐怖的怪物巨石雨，再次使用可取消事件
+			困难模式下事件会大幅度增强
+			“或许我应该用灵魂手册在这场怪雨中做点什么”
+			'''
+	}
+
+	AnomalyAccessory2: {
+		Tooltip:
+			'''
+			受到的伤害降低 20%，大幅增加生命再生
+			造成的伤害减少 10%
+			'''
+		DisplayName: 狂暴血潮护符
+	}
+
+	AnomalyAccessory3: {
+		Tooltip:
+			'''
+			受到的伤害降低 25%，大幅增加生命再生
+			造成的伤害提升 5%
+			'''
+		DisplayName: 虚无护符
+	}
+
+	AuricStaff: {
+		Tooltip: 亚利姆使用过的铜短剑
+		DisplayName: 真铜短剑
+	}
+
+	ContractShackles: {
+		DisplayName: 幽冥镜
+		Tooltip:
+			'''
+			这面镜子使你毛骨悚然
+			永久增加 1 个同种怪物召唤上限，召唤怪物获得大幅度加强
+			'''
+	}
+
+	SoulMark: {
+		DisplayName: 灵魂鱼派
+		Tooltip:
+			'''
+			你最好不要盯着它的眼睛看
+			永久增加 1 个同种怪物召唤上限
+			'''
+	}
+
+	HomologousParticle: {
+		DisplayName: 纯净魔石
+		Tooltip: 未经注魔的纯净魔石，蕴含着永恒的力量
+	}
+
+	ResonanceTransmuterItem: {
+		DisplayName: 魔石兑换机
+		Tooltip: 一台永恒的机器，可以对魔石注魔
+	}
 }
 
 BlackHoleStone: {
@@ -431,7 +501,10 @@ Conditions: {
 	}
 }
 
-// Tiles.EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile
+Tiles: {
+	// EnchantingWorkshopTile.MapEntry: Enchanting Workshop Tile
+	// ResonanceTransmuterTile.MapEntry: Resonance Transmuter Tile
+}
 
 Buffs: {
 	CMoonBuff: {
@@ -463,6 +536,11 @@ Buffs: {
 		DisplayName: 真夜明锭守护着你
 		Description: 真夜明锭守护着你
 	}
+
+	AuricMinionBuff: {
+		Description: 真铜短剑守护着你
+		DisplayName: 真铜短剑守护着你
+	}
 }
 
 Configs: {
@@ -481,6 +559,8 @@ Projectiles: {
 	FakeCopperShortswordProj.DisplayName: 真神圣锭
 	LuminiteStaffProj.DisplayName: 真夜明锭
 	LuminiteMinionProj.DisplayName: 真夜明锭
+	// GiganticBoulder.DisplayName: Gigantic Boulder
+	AuricMinionProj.DisplayName: 真铜短剑
 }
 
 // Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册
