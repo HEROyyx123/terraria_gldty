@@ -452,6 +452,40 @@ Items: {
 		DisplayName: 魔石兑换机
 		Tooltip: 一台永恒的机器，可以对魔石注魔
 	}
+
+	StormDecree: {
+		DisplayName: 闪电之击
+		Tooltip: 闪电的力量
+	}
+
+	Pack145: {
+		DisplayName: 1.4.5代餐礼包
+		Tooltip: 内含随机一款1.4.5的物品，也有概率什么也不会获得，未完待续...
+	}
+
+	SerpentBrace: {
+		Tooltip:
+			'''
+			每挥动3次，第二条鞭子会协同攻击
+			“麻烦找上门，就得抽它……”
+			'''
+		DisplayName: 蛇形手环
+	}
+
+	SilverBracer: {
+		DisplayName: 银护腕
+		Tooltip: 召唤标记效果上限增加1，大幅延长召唤标记效果的持续时间
+	}
+
+	SilverShield: {
+		DisplayName: 银盾
+		Tooltip:
+			'''
+			对击退和火块免疫
+			召唤标记效果上限增加1
+			大幅延长召唤标记效果的持续时间
+			'''
+	}
 }
 
 BlackHoleStone: {
@@ -561,6 +595,7 @@ Projectiles: {
 	LuminiteMinionProj.DisplayName: 真夜明锭
 	// GiganticBoulder.DisplayName: Gigantic Boulder
 	AuricMinionProj.DisplayName: 真铜短剑
+	StormLightningProj.DisplayName: 闪电之击
 }
 
 // Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册

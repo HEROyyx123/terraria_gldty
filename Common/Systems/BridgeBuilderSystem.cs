@@ -30,7 +30,10 @@ namespace terraria_gldty.Common.Systems
         public void ToggleUI()
         {
             if (BridgeUIInterface.CurrentState == null)
+            {
+                BridgeUI.OnOpenUI(); // 打开 UI 前同步数据
                 BridgeUIInterface.SetState(BridgeUI);
+            }
             else
                 BridgeUIInterface.SetState(null);
         }

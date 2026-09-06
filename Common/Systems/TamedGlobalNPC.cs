@@ -240,24 +240,60 @@ namespace terraria_gldty.Common.Systems
 
                 if (contactAttackCooldown <= 0 && npc.Hitbox.Intersects(targetNPC.Hitbox))
                 {
+                    // 1. 过滤：如果是灾厄的血弹或特殊内部NPC，直接避开 StrikeNPC 调用，改用安全扣血
+                    bool isCalamityBloodBomb = targetNPC.ModNPC != null && targetNPC.ModNPC.FullName.Contains("BloodBomb");
+
                     int baseDamage = npc.damage > 0 ? npc.damage : (npc.defDamage > 0 ? npc.defDamage : 20);
-                    
                     StatModifier summonModifier = ownerPlayer.GetTotalDamage(DamageClass.Summon).Scale(0.5f);
                     int finalDamage = (int)summonModifier.ApplyTo(baseDamage);
-                    bool isCrit = Main.rand.NextBool((int)ownerPlayer.GetTotalCritChance(DamageClass.Summon));
 
-                    int actualDamageDone = (int)targetNPC.SimpleStrikeNPC(
-                        damage: finalDamage,
-                        hitDirection: targetDir,
-                        crit: isCrit,
-                        knockBack: 3f,
-                        damageType: DamageClass.Summon,
-                        damageVariation: true
-                    );
-
-                    if (actualDamageDone > 0)
+                    if (isCalamityBloodBomb)
                     {
-                        ownerPlayer.addDPS(actualDamageDone);
+                        // 灾厄血弹直接扣血，不走 HitEffect / StrikeNPC，避开灾厄空指针 Bug
+                        targetNPC.life -= finalDamage;
+                        if (targetNPC.life <= 0)
+                        {
+                            targetNPC.checkDead();
+                        }
+                    }
+                    else
+                    {
+                        int critChance = (int)ownerPlayer.GetTotalCritChance(DamageClass.Summon);
+                        bool isCrit = Main.rand.Next(1, 101) <= critChance;
+
+                        NPC.HitInfo hitInfo = new NPC.HitInfo
+                        {
+                            Damage = finalDamage,
+                            SourceDamage = baseDamage,
+                            Knockback = 3f,
+                            HitDirection = targetDir,
+                            Crit = isCrit,
+                            DamageType = DamageClass.Summon,
+                            HideCombatText = false
+                        };
+
+                        // 2. 双重保险：包裹 try-catch 拦截第三方 Mod 崩溃
+                        try
+                        {
+                            int actualDamageDone = targetNPC.StrikeNPC(hitInfo, fromNet: false, noPlayerInteraction: false);
+                            if (actualDamageDone > 0)
+                            {
+                                ownerPlayer.addDPS(actualDamageDone);
+                                if (Main.netMode != NetmodeID.SinglePlayer)
+                                {
+                                    NetMessage.SendStrikeNPC(targetNPC, hitInfo);
+                                }
+                            }
+                        }
+                        catch
+                        {
+                            // 如果其他 Mod 的 Hook 依然抛出 NullReference，降级为直接扣血保住游戏运行
+                            targetNPC.life -= finalDamage;
+                            if (targetNPC.life <= 0)
+                            {
+                                targetNPC.checkDead();
+                            }
+                        }
                     }
 
                     contactAttackCooldown = 20;

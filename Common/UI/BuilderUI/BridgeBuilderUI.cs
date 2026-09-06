@@ -139,8 +139,18 @@ namespace terraria_gldty.Common.UI.BuilderUI
             UIPanel undoBtn = CreateButton("", 154, 295, 172, 28, (a, b) => BridgeBuilderSettings.UndoLastBuild(), new Color(140, 40, 40, 220));
             undoBtn.Append(_undoBtnText);
             _mainPanel.Append(undoBtn);
-
             UpdateTextDisplays();
+            
+        }
+
+        // 1. 在 BridgeBuilderUI 类中新增一个同步数据的公开方法
+        public void OnOpenUI()
+        {
+            if (Main.gameMenu || Main.LocalPlayer == null) return;
+
+            var modPlayer = Main.LocalPlayer.GetModPlayer<BridgeBuilderPlayer>();
+            _platformSlot.Item = modPlayer.platformItem ?? new Item();
+            _lightSlot.Item = modPlayer.lightItem ?? new Item();
         }
 
         private void DragStart(UIMouseEvent evt, UIElement listeningElement)
@@ -173,8 +183,16 @@ namespace terraria_gldty.Common.UI.BuilderUI
                 _mainPanel.Recalculate();
             }
 
-            BridgeBuilderSettings.PlatformItem = _platformSlot.Item;
-            BridgeBuilderSettings.LightItem = _lightSlot.Item;
+            // 进游戏后同步给 ModPlayer 实时保存
+            if (Main.LocalPlayer != null && Main.LocalPlayer.active)
+            {
+                var modPlayer = Main.LocalPlayer.GetModPlayer<BridgeBuilderPlayer>();
+                modPlayer.platformItem = _platformSlot.Item;
+                modPlayer.lightItem = _lightSlot.Item;
+
+                BridgeBuilderSettings.PlatformItem = _platformSlot.Item;
+                BridgeBuilderSettings.LightItem = _lightSlot.Item;
+            }
 
             UpdateTextDisplays();
         }

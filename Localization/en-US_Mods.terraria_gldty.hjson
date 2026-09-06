@@ -444,6 +444,44 @@ Items: {
 		DisplayName: Resonance Transmuter Item
 		Tooltip: ""
 	}
+
+	StormDecree: {
+		DisplayName: Storm Decree
+		Tooltip: ""
+	}
+
+	Pack145: {
+		DisplayName: 1.4.5 Meal Replacement Pack
+		Tooltip: Contains a random 1.4.5 item, with a chance to get nothing. To be continued...
+	}
+
+	SerpentBrace: {
+		Tooltip:
+			'''
+			Every 3 swings, a second whip performs a coordinated strike
+			'When trouble comes knocking, you've got to whip it...'
+			'''
+		DisplayName: Serpent Brace
+	}
+
+	SilverBracer: {
+		DisplayName: Silver Bracer
+		Tooltip:
+			'''
+			Increases your max number of summon tag effects by 1
+			Significantly increases the duration of your summon tag effects
+			'''
+	}
+
+	SilverShield: {
+		DisplayName: Silver Shield
+		Tooltip:
+			'''
+			Grants immunity to knockback and fire blocks
+			Increases your max number of summon tag effects by 1
+			Significantly increases the duration of your summon tag effects
+			'''
+	}
 }
 
 BlackHoleStone: {
@@ -553,6 +591,7 @@ Projectiles: {
 	LuminiteMinionProj.DisplayName: True Lunar Bar Proj
 	GiganticBoulder.DisplayName: Gigantic Boulder
 	AuricMinionProj.DisplayName: CopperShortsword Proj
+	StormLightningProj.DisplayName: Storm Lightning Proj
 }
 
 Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册
