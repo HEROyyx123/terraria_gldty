@@ -599,3 +599,16 @@ Projectiles: {
 }
 
 // Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册
+
+BossChecklistIntegration: {
+	AnomalyWeather: {
+		EntryName: 异界狂雨
+		SpawnInfo:
+			'''
+			在地表使用恐怖气球。
+			天空将降下异常暴雨与危险生物，
+			击杀事件生成的敌怪以推进事件进度。
+			'''
+		DespawnMessage: 异界狂雨已经平息……
+	}
+}

@@ -146,11 +146,33 @@ namespace terraria_gldty.Common.UI.BuilderUI
         // 1. 在 BridgeBuilderUI 类中新增一个同步数据的公开方法
         public void OnOpenUI()
         {
-            if (Main.gameMenu || Main.LocalPlayer == null) return;
+            if (Main.gameMenu || Main.LocalPlayer == null)
+                return;
 
-            var modPlayer = Main.LocalPlayer.GetModPlayer<BridgeBuilderPlayer>();
-            _platformSlot.Item = modPlayer.platformItem ?? new Item();
-            _lightSlot.Item = modPlayer.lightItem ?? new Item();
+            BridgeBuilderPlayer modPlayer =
+                Main.LocalPlayer.GetModPlayer<BridgeBuilderPlayer>();
+
+            if (modPlayer.platformItem == null)
+            {
+                modPlayer.platformItem = new Item();
+                modPlayer.platformItem.SetDefaults(ItemID.None);
+            }
+
+            if (modPlayer.lightItem == null)
+            {
+                modPlayer.lightItem = new Item();
+                modPlayer.lightItem.SetDefaults(ItemID.None);
+            }
+
+            _platformSlot.Item = modPlayer.platformItem;
+            _lightSlot.Item = modPlayer.lightItem;
+
+            // 同时同步到实际建造设置
+            BridgeBuilderSettings.PlatformItem =
+                modPlayer.platformItem;
+
+            BridgeBuilderSettings.LightItem =
+                modPlayer.lightItem;
         }
 
         private void DragStart(UIMouseEvent evt, UIElement listeningElement)

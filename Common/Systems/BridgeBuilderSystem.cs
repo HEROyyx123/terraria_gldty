@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 using Terraria.UI;
 using terraria_gldty.Content.Items;
 using terraria_gldty.Common.UI.BuilderUI;
+using Terraria.ID;
 
 namespace terraria_gldty.Common.Systems
 {
@@ -25,6 +26,21 @@ namespace terraria_gldty.Common.Systems
                 BridgeUI = new BridgeBuilderUI();
                 BridgeUI.Activate();
             }
+        }
+
+        public override void OnWorldUnload()
+        {
+            BridgeBuilderSettings.PlatformItem = CreateEmptyItem();
+            BridgeBuilderSettings.LightItem = CreateEmptyItem();
+
+            BridgeBuilderSettings.LastBuildHistory.Clear();
+        }
+
+        private static Item CreateEmptyItem()
+        {
+            Item item = new Item();
+            item.SetDefaults(ItemID.None);
+            return item;
         }
 
         public void ToggleUI()

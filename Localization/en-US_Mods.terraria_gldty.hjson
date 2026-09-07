@@ -595,3 +595,17 @@ Projectiles: {
 }
 
 Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册
+
+BossChecklistIntegration: {
+	AnomalyWeather: {
+		EntryName: Anomalous Storm
+		SpawnInfo:
+			'''
+			Use the Turbulent Barometer on the surface.
+			A violent anomalous storm will begin,
+			spawning dangerous creatures and hazards.
+			Defeat event-spawned enemies to progress.
+			'''
+		DespawnMessage: The anomalous storm has finally subsided...
+	}
+}
