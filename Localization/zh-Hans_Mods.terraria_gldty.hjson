@@ -486,6 +486,15 @@ Items: {
 			大幅延长召唤标记效果的持续时间
 			'''
 	}
+
+	ArcSurge: {
+		Tooltip:
+			'''
+			释放强力闪电轰击敌人
+			“无限力量！”
+			'''
+		DisplayName: 电弧涌动
+	}
 }
 
 BlackHoleStone: {
@@ -575,6 +584,11 @@ Buffs: {
 		Description: 真铜短剑守护着你
 		DisplayName: 真铜短剑守护着你
 	}
+
+	RedZapped: {
+		Description: 電擊
+		DisplayName: 電擊
+	}
 }
 
 Configs: {
@@ -596,6 +610,7 @@ Projectiles: {
 	// GiganticBoulder.DisplayName: Gigantic Boulder
 	AuricMinionProj.DisplayName: 真铜短剑
 	StormLightningProj.DisplayName: 闪电之击
+	ArcSurgeProj.DisplayName: 電弧
 }
 
 // Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册

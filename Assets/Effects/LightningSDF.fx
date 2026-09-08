@@ -1,15 +1,18 @@
 matrix WorldViewProjection;
+
 float Time;
 float GlowStrength;
 
-// 增加贴图采样（用于采样 RenderTarget 的渲染结果）
 texture RenderTargetTexture;
+
 sampler ImplicitTexture = sampler_state
 {
     Texture = <RenderTargetTexture>;
+
     MinFilter = Linear;
     MagFilter = Linear;
     MipFilter = Linear;
+
     AddressU = Clamp;
     AddressV = Clamp;
 };
@@ -31,46 +34,74 @@ struct VertexShaderOutput
 VertexShaderOutput MainVS(VertexShaderInput input)
 {
     VertexShaderOutput output;
+
     output.Position = mul(input.Position, WorldViewProjection);
     output.Color = input.Color;
     output.TexCoord = input.TexCoord;
+
     return output;
 }
 
-// 绘制闪电网格体到 RT 时使用的 PS
 float4 MainPS(VertexShaderOutput input) : COLOR0
 {
     float dist = abs(input.TexCoord.x);
-    
-    // 1. 核心高能区域
-    float core = saturate(1.0 - dist * 1.8);
-    core = pow(core, 3.0);
 
-    // 高频流动闪烁
-    float flicker = 0.85 + 0.15 * sin(Time * 80.0 + input.TexCoord.y * 50.0);
-    
-    // 2. 边缘辉光 (Glow)
-    float glow = 1.0 / (1.0 + dist * 6.0);
-    
-    float intensity = (core * 2.0 + glow * GlowStrength) * flicker;
-    
-    // 渐变衰减：边缘很远的地方强度直接清零，防止微弱残余把屏幕擦亮
-    float alphaCutoff = smoothstep(0.9, 0.0, dist);
+    // 非常窄的高亮核心。
+    // 不再把整条电弧刷成白色。
+    float core =
+        saturate(1.0 - dist * 3.0);
 
-    float3 finalColor = input.Color.rgb * intensity;
-    
-    // 核心提亮为白色
-    finalColor += float3(core, core, core) * 1.2;
+    core = pow(core, 2.6);
 
-    // 乘以 alphaCutoff 确保边缘外纯黑且 alpha 为 0
-    return float4(finalColor * alphaCutoff, input.Color.a * alphaCutoff);
+    // 红色主体辉光。
+    float glow =
+        1.0 / (1.0 + dist * 7.0);
+
+    // 很宽但很淡的外围红光。
+    float outerGlow =
+        1.0 / (1.0 + dist * 18.0);
+
+    // 完全取消高频 flicker。
+    // 电流亮度稳定，只依靠几何折线表现“电”。
+    float intensity =
+        core * 1.55 +
+        glow * GlowStrength * 0.78 +
+        outerGlow * GlowStrength * 0.16;
+
+    // 让边缘自然衰减。
+    float alphaCutoff =
+        smoothstep(
+            0.96,
+            0.12,
+            dist
+        );
+
+    float3 finalColor =
+        input.Color.rgb * intensity;
+
+    // 只有最中心的一小条区域接近白色，
+    // 保留原版 Arc Surge 的红白电弧观感。
+    finalColor +=
+        float3(1.0, 0.88, 0.88) *
+        core *
+        0.92;
+
+    finalColor = saturate(finalColor);
+
+    return float4(
+        finalColor * alphaCutoff,
+        input.Color.a * alphaCutoff
+    );
 }
 
 technique LightningTechnique
 {
     pass Pass1
     {
-        VertexShader = compile vs_2_0 MainVS();
-        PixelShader = compile ps_2_0 MainPS();
+        VertexShader =
+            compile vs_2_0 MainVS();
+
+        PixelShader =
+            compile ps_2_0 MainPS();
     }
 }

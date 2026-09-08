@@ -482,6 +482,15 @@ Items: {
 			Significantly increases the duration of your summon tag effects
 			'''
 	}
+
+	ArcSurge: {
+		Tooltip:
+			'''
+			Unleashes powerful lightning to strike enemies
+			"Unlimited power!"
+			'''
+		DisplayName: Arc Surge
+	}
 }
 
 BlackHoleStone: {
@@ -571,6 +580,11 @@ Buffs: {
 		Description: Mods.terraria_gldty.Buffs.AuricMinionBuff.Description
 		DisplayName: Auric Minion Buff
 	}
+
+	RedZapped: {
+		Description: Mods.terraria_gldty.Buffs.RedZapped.Description
+		DisplayName: Red Zapped
+	}
 }
 
 Configs: {
@@ -592,6 +606,7 @@ Projectiles: {
 	GiganticBoulder.DisplayName: Gigantic Boulder
 	AuricMinionProj.DisplayName: CopperShortsword Proj
 	StormLightningProj.DisplayName: Storm Lightning Proj
+	ArcSurgeProj.DisplayName: Arc Surge
 }
 
 Keybinds.打开灵魂手册.DisplayName: 打开灵魂手册
